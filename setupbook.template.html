@@ -1,0 +1,1550 @@
+<title>Assetto Setupbook</title>
+<style>
+:root{
+  --ground:#E9ECEE; --surface:#FFFFFF; --surface-2:#F3F5F6; --surface-3:#E4E9EB;
+  --ink:#12191D; --ink-2:#3D4A52; --muted:#6B7A83;
+  --rule:#D2D9DC; --rule-strong:#B4BFC5;
+  --cool:#17626F; --cool-bg:rgba(23,98,111,.14);
+  --warm:#9C6210; --warm-bg:rgba(156,98,16,.15);
+  --mid:#5A5C86;  --mid-bg:rgba(90,92,134,.14);
+  --out:#9E3350;  --out-bg:rgba(158,51,80,.14);
+  --shadow:0 1px 2px rgba(18,25,29,.06),0 8px 24px rgba(18,25,29,.07);
+  --display:"Bahnschrift","Bahnschrift Condensed","DIN Alternate",system-ui,sans-serif;
+  --body:"Segoe UI","Selawik",system-ui,-apple-system,sans-serif;
+  --mono:"Cascadia Mono","Consolas","SF Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#12171A; --surface:#181E22; --surface-2:#1E262A; --surface-3:#263036;
+    --ink:#E8EDEF; --ink-2:#B7C2C7; --muted:#849099;
+    --rule:#2A3439; --rule-strong:#3B484F;
+    --cool:#5DBFD1; --cool-bg:rgba(93,191,209,.17);
+    --warm:#D79B45; --warm-bg:rgba(215,155,69,.17);
+    --mid:#9B9DD4;  --mid-bg:rgba(155,157,212,.17);
+    --out:#E2758F;  --out-bg:rgba(226,117,143,.17);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#12171A; --surface:#181E22; --surface-2:#1E262A; --surface-3:#263036;
+  --ink:#E8EDEF; --ink-2:#B7C2C7; --muted:#849099;
+  --rule:#2A3439; --rule-strong:#3B484F;
+  --cool:#5DBFD1; --cool-bg:rgba(93,191,209,.17);
+  --warm:#D79B45; --warm-bg:rgba(215,155,69,.17);
+  --mid:#9B9DD4;  --mid-bg:rgba(155,157,212,.17);
+  --out:#E2758F;  --out-bg:rgba(226,117,143,.17);
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:var(--body); font-size:15px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.shell{max-width:1720px; margin:0 auto; padding:26px 22px 70px; display:grid; grid-template-columns:300px minmax(0,1fr); gap:24px; align-items:start}
+@media (max-width:960px){ .shell{grid-template-columns:1fr} }
+
+/* ---- masthead ---- */
+.masthead{grid-column:1/-1; display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px}
+.eyebrow{font-family:var(--display); font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--cool); font-weight:600}
+h1{font-family:var(--display); font-weight:700; font-size:clamp(28px,3.6vw,42px); line-height:1.02; margin:2px 0 0; letter-spacing:-.01em}
+.mast-right{display:flex; flex-direction:column; align-items:flex-end; gap:5px}
+.lede{margin:6px 0 0; font-size:14px; color:var(--muted); max-width:62ch}
+.stamp{font-family:var(--mono); font-size:12px; color:var(--muted); text-align:right}
+.real{color:var(--ink)}
+.click{color:var(--muted); font-size:11px; margin-left:5px}
+table.build{width:100%; border-collapse:separate; border-spacing:0; font-size:13px}
+table.build th{
+  font-family:var(--display); font-size:10.5px; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--muted); text-align:left; padding:6px 8px; border-bottom:1px solid var(--rule-strong);
+}
+table.build td{border-bottom:1px solid var(--rule); padding:4px 8px; vertical-align:middle}
+table.build td.b-name{font-size:13px; color:var(--ink-2); white-space:nowrap}
+table.build td.b-val{font-family:var(--mono); white-space:nowrap}
+table.build td.b-src{font-family:var(--mono); font-size:11px; color:var(--muted); white-space:nowrap; max-width:190px; overflow:hidden; text-overflow:ellipsis}
+table.build tr.open td{color:var(--muted)}
+table.build tr.open td.b-name{font-style:italic}
+.stepper{display:inline-flex; align-items:center; gap:3px}
+.stepper button{
+  width:22px; height:22px; line-height:1; font-family:var(--mono); font-size:13px; font-weight:700;
+  background:var(--surface-2); color:var(--ink); border:1px solid var(--rule-strong); border-radius:2px; cursor:pointer;
+}
+.stepper button:hover:not(:disabled){background:var(--surface-3)}
+.stepper button:disabled{opacity:.3; cursor:default}
+.stepper button:focus-visible{outline:2px solid var(--cool); outline-offset:1px}
+.stepper input{
+  width:64px; font-family:var(--mono); font-size:12.5px; text-align:right; color:var(--ink);
+  background:var(--surface-2); border:1px solid var(--rule-strong); border-radius:2px; padding:2px 5px;
+}
+.stepper input:focus-visible{outline:2px solid var(--cool); outline-offset:1px}
+.edited{color:var(--cool); font-weight:600}
+.buildwrap{overflow-x:auto; max-height:420px; overflow-y:auto}
+ol.ways{margin:0; padding-left:20px; display:flex; flex-direction:column; gap:8px}
+ol.ways li{font-size:14px; color:var(--ink-2); max-width:74ch}
+ol.ways li b{color:var(--ink); font-weight:600}
+ul.files{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:3px}
+ul.files li{font-family:var(--mono); font-size:12.5px; color:var(--muted)}
+ul.files li b{color:var(--ink-2); font-weight:600}
+select.lang{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--muted); background:transparent; border:1px solid var(--rule-strong);
+  border-radius:2px; padding:2px 4px; cursor:pointer;
+}
+select.lang:hover{color:var(--ink)}
+select.lang:focus-visible{outline:2px solid var(--cool); outline-offset:1px}
+
+/* ---- sidebar ---- */
+.side{background:var(--surface); border:1px solid var(--rule); border-radius:3px; box-shadow:var(--shadow); display:flex; flex-direction:column; overflow:hidden; position:sticky; top:16px; max-height:calc(100vh - 32px)}
+.side-top{padding:12px; display:flex; flex-direction:column; gap:8px; border-bottom:1px solid var(--rule)}
+input.field, select.field{
+  font-family:var(--body); font-size:13.5px; color:var(--ink); background:var(--surface-2);
+  border:1px solid var(--rule-strong); border-radius:2px; padding:7px 9px; width:100%;
+}
+input.field:focus-visible, select.field:focus-visible{outline:2px solid var(--cool); outline-offset:1px}
+.viewtabs{display:flex; gap:0; border:1px solid var(--rule-strong); border-radius:2px; overflow:hidden}
+.viewtabs button{
+  flex:1; font-family:var(--display); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; font-weight:600;
+  background:var(--surface-2); color:var(--ink-2); border:0; border-right:1px solid var(--rule-strong);
+  padding:6px 4px; cursor:pointer;
+}
+.viewtabs button:last-child{border-right:0}
+.viewtabs button[aria-pressed="true"]{background:var(--cool); color:var(--surface)}
+.viewtabs button:focus-visible{outline:2px solid var(--cool); outline-offset:-2px}
+.source{display:flex; flex-direction:column; gap:6px; padding-bottom:9px; border-bottom:1px solid var(--rule)}
+.src-line{display:flex; align-items:center; gap:7px; font-size:12.5px; font-weight:600; color:var(--ink-2)}
+.src-dot{width:7px; height:7px; border-radius:50%; background:var(--muted); flex:none}
+.src-dot.own{background:var(--cool)}
+button.src-btn{width:100%; font-size:11.5px; padding:6px 8px}
+.src-hint{margin:0; font-size:11.5px; color:var(--muted); line-height:1.4}
+.summary{
+  font-family:var(--mono); font-size:11.5px; color:var(--muted); line-height:1.45;
+  border-top:1px solid var(--rule); padding-top:8px; margin-top:1px;
+}
+.summary b{color:var(--ink); font-weight:600}
+.summary .narrow{color:var(--cool)}
+.carlist{overflow-y:auto; flex:1; min-height:0}
+.sect{
+  font-family:var(--display); font-size:10px; letter-spacing:.16em; text-transform:uppercase; font-weight:700;
+  color:var(--muted); background:var(--surface-2); padding:7px 12px; border-bottom:1px solid var(--rule);
+  position:sticky; top:0; z-index:1;
+}
+.sect.note{position:static; background:none; text-transform:none; letter-spacing:0; font-family:var(--body); font-size:12.5px; font-weight:400}
+.car{border-bottom:1px solid var(--rule)}
+.car-row{display:flex; align-items:stretch}
+.pin{
+  background:none; border:0; cursor:pointer; padding:0 2px 0 9px;
+  color:var(--rule-strong); font-size:14px; line-height:1; display:flex; align-items:center;
+}
+.pin:hover{color:var(--warm)}
+.pin.on{color:var(--warm)}
+.pin:focus-visible{outline:2px solid var(--cool); outline-offset:-2px}
+.car-head{display:flex; align-items:center; gap:9px; padding:9px 12px 9px 7px; cursor:pointer; background:none; border:0; flex:1; min-width:0; text-align:left; font-family:inherit; color:inherit}
+.car-row:hover{background:var(--surface-2)}
+.car-head:focus-visible{outline:2px solid var(--cool); outline-offset:-2px}
+.car.open .car-row{background:var(--surface-3)}
+.car-name{font-size:13.5px; font-weight:600; line-height:1.25; flex:1; min-width:0}
+.car-brand{display:block; font-size:11.5px; font-weight:400; color:var(--muted)}
+.car-count{font-family:var(--mono); font-size:11.5px; color:var(--muted); flex:none; display:flex; align-items:center; gap:5px}
+.car-count .of{color:var(--cool)}
+.selbadge{background:var(--cool); color:var(--surface); border-radius:2px; padding:1px 5px; font-weight:700; font-size:10.5px}
+.trk-n{float:right; font-family:var(--mono); letter-spacing:0; text-transform:none; font-weight:400}
+.car-body{display:none; padding:2px 12px 12px}
+.car.open .car-body{display:block}
+.trk{font-family:var(--display); font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); font-weight:700; margin:9px 0 3px}
+label.setup{display:flex; align-items:flex-start; gap:7px; padding:3px 0; font-size:13px; cursor:pointer; line-height:1.35}
+label.setup:hover{color:var(--cool)}
+label.setup input{margin:3px 0 0; flex:none; accent-color:var(--cool)}
+.setup-d{font-family:var(--mono); font-size:10.5px; color:var(--muted); display:block}
+.auto-tag{font-size:10px; color:var(--muted); border:1px solid var(--rule-strong); border-radius:2px; padding:0 3px; margin-left:4px}
+.samecls{background:none; border:0; padding:0; margin-top:6px; font-family:inherit; font-size:12px; color:var(--cool); cursor:pointer; text-decoration:underline}
+
+/* ---- main column ---- */
+.main{display:flex; flex-direction:column; gap:16px; min-width:0}
+.panel{background:var(--surface); border:1px solid var(--rule); border-radius:3px; box-shadow:var(--shadow); padding:14px 16px; display:flex; flex-direction:column; gap:12px}
+.bar{display:flex; flex-wrap:wrap; align-items:center; gap:9px 16px}
+.bar-label{font-family:var(--display); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:700}
+button.btn, select.btn{
+  font-family:var(--display); font-size:12.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:600;
+  color:var(--ink); background:var(--surface-2); border:1px solid var(--rule-strong);
+  border-radius:2px; padding:6px 11px; cursor:pointer;
+}
+select.btn{text-transform:none; letter-spacing:0; font-family:var(--body); font-size:13px}
+button.btn[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:var(--surface)}
+button.btn:focus-visible, select.btn:focus-visible, th.col:focus-visible{outline:2px solid var(--cool); outline-offset:2px}
+.hint{font-size:13px; color:var(--muted)}
+.chips{display:flex; flex-wrap:wrap; gap:6px}
+.chip{display:inline-flex; align-items:center; gap:6px; font-size:12.5px; background:var(--surface-2); border:1px solid var(--rule-strong); border-radius:2px; padding:3px 4px 3px 8px}
+.chip b{font-weight:600}
+.chip em{font-style:normal; color:var(--muted); font-family:var(--mono); font-size:11px}
+.chip button{background:none; border:0; cursor:pointer; color:var(--muted); font-size:14px; line-height:1; padding:2px 4px}
+.chip button:hover{color:var(--out)}
+.warn{border-left:2px solid var(--warm); background:var(--warm-bg); padding:9px 12px; font-size:13.5px; border-radius:2px}
+.legend{display:flex; flex-wrap:wrap; gap:6px 16px; font-size:13px; color:var(--ink-2)}
+.legend span{display:inline-flex; align-items:center; gap:7px; white-space:nowrap}
+.swatch{width:22px; height:10px; border-radius:1px; border:1px solid var(--rule-strong); flex:none}
+.sw-cool{background:var(--cool-bg); border-color:var(--cool)}
+.sw-warm{background:var(--warm-bg); border-color:var(--warm)}
+.sw-mid{background:var(--mid-bg); border-color:var(--mid)}
+.sw-out{background:var(--out-bg); border-color:var(--out)}
+.sw-pick{background:transparent; border:2px solid var(--ink)}
+
+/* ---- table ---- */
+.scroller{overflow:auto; max-height:75vh; background:var(--surface); border:1px solid var(--rule); border-radius:3px; box-shadow:var(--shadow)}
+table{border-collapse:separate; border-spacing:0; width:100%; font-variant-numeric:tabular-nums}
+th,td{padding:0; text-align:left}
+thead th{
+  position:sticky; top:0; z-index:3; background:var(--surface-2);
+  border-bottom:1px solid var(--rule-strong); vertical-align:bottom;
+  padding:9px 10px 8px; border-top:3px solid transparent;
+}
+thead th.col{cursor:pointer; user-select:none}
+thead th.col:hover{background:var(--surface-3)}
+thead th.refA{border-top-color:var(--cool); background:var(--cool-bg)}
+thead th.refB{border-top-color:var(--warm); background:var(--warm-bg)}
+thead th.pname{left:0; z-index:4; min-width:210px; border-right:1px solid var(--rule-strong)}
+th.pname,td.pname{position:sticky; left:0; background:var(--surface); border-right:1px solid var(--rule)}
+.colcar{font-family:var(--display); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); display:block; white-space:nowrap; max-width:190px; overflow:hidden; text-overflow:ellipsis}
+.colname{font-family:var(--display); font-size:13.5px; font-weight:600; display:block; white-space:nowrap; max-width:190px; overflow:hidden; text-overflow:ellipsis}
+.colmeta{font-family:var(--mono); font-size:10px; color:var(--muted); display:block; margin-top:2px; white-space:nowrap}
+.badge{display:inline-block; font-family:var(--display); font-size:9.5px; font-weight:700; letter-spacing:.13em; text-transform:uppercase; padding:2px 6px; border-radius:2px; margin-bottom:4px}
+.badge-a{background:var(--cool); color:var(--surface)}
+.badge-b{background:var(--warm); color:var(--surface)}
+.badge-ghost{background:transparent; color:transparent; border:1px solid transparent}
+tbody td{border-bottom:1px solid var(--rule); padding:6px 10px; font-family:var(--mono); font-size:13px}
+tbody td.val{cursor:pointer}
+tbody td.val:hover{box-shadow:inset 0 0 0 1px var(--rule-strong)}
+tbody td.pname{font-family:var(--body); font-size:13px; color:var(--ink-2); white-space:nowrap; padding-right:16px}
+tbody td.na{color:var(--muted); cursor:default}
+tbody td.na:hover{box-shadow:none}
+tbody tr.grp td{
+  background:var(--surface-2); border-bottom:1px solid var(--rule-strong); border-top:1px solid var(--rule-strong);
+  font-family:var(--display); font-size:11px; font-weight:700; letter-spacing:.15em; text-transform:uppercase;
+  color:var(--muted); padding:8px 10px;
+}
+tbody tr.grp td.pname{background:var(--surface-2)}
+tbody tr:hover td.pname{color:var(--ink)}
+td.cool{background:var(--cool-bg); color:var(--cool); font-weight:600}
+td.warm{background:var(--warm-bg); color:var(--warm); font-weight:600}
+td.mid{background:var(--mid-bg);  color:var(--mid);  font-weight:600}
+td.out{background:var(--out-bg);  color:var(--out);  font-weight:700}
+td.picked{box-shadow:inset 0 0 0 2px var(--ink)}
+td.val:hover.picked{box-shadow:inset 0 0 0 2px var(--ink)}
+.empty{padding:44px 20px; text-align:center; color:var(--muted)}
+.empty strong{display:block; font-family:var(--display); font-size:19px; color:var(--ink-2); margin-bottom:5px}
+pre.ini{
+  margin:0; background:var(--surface-2); border:1px solid var(--rule); border-radius:2px;
+  padding:13px 15px; overflow:auto; max-height:320px;
+  font-family:var(--mono); font-size:12.5px; line-height:1.5; color:var(--ink-2); white-space:pre;
+}
+.count{font-family:var(--mono); font-size:12.5px; color:var(--muted)}
+.count strong{color:var(--ink); font-weight:600}
+h2{font-family:var(--display); font-size:18px; margin:0; letter-spacing:.01em}
+details.about{background:var(--surface); border:1px solid var(--rule); border-radius:3px; padding:0 16px}
+details.about summary{
+  font-family:var(--display); font-size:14px; font-weight:600; letter-spacing:.01em;
+  padding:12px 0; cursor:pointer; color:var(--ink-2); list-style:none;
+}
+details.about summary::-webkit-details-marker{display:none}
+details.about summary::before{content:"+"; display:inline-block; width:16px; color:var(--cool); font-weight:700}
+details.about[open] summary::before{content:"\2212"}
+details.about summary:focus-visible{outline:2px solid var(--cool); outline-offset:2px}
+details.about ol{margin:0 0 12px; padding:0 0 0 22px; display:flex; flex-direction:column; gap:7px}
+details.about li{font-size:14px; color:var(--ink-2); max-width:74ch}
+details.about li b{color:var(--ink); font-weight:600}
+.about-note{
+  margin:0 0 14px; padding:10px 12px; font-size:13.5px; color:var(--ink-2); max-width:74ch;
+  border-left:2px solid var(--warm); background:var(--warm-bg); border-radius:2px;
+}
+</style>
+
+<div class="shell">
+  <div class="masthead">
+    <div>
+      <span class="eyebrow">Assetto Corsa</span>
+      <h1 id="h1"></h1>
+      <p class="lede" id="lede"></p>
+    </div>
+    <div class="mast-right">
+      <select class="lang" id="lang" aria-label="Language"></select>
+      <div class="stamp" id="stamp"></div>
+    </div>
+  </div>
+
+  <aside class="side">
+    <div class="side-top">
+      <div class="source">
+        <div class="src-line"><span class="src-dot" id="src-dot"></span><span id="src-name"></span></div>
+        <button class="btn src-btn" id="loadbtn"></button>
+        <button class="btn src-btn" id="backbtn" hidden></button>
+        <p class="src-hint" id="src-hint"></p>
+        <input type="file" id="folder" webkitdirectory directory multiple hidden>
+      </div>
+      <input class="field" id="q" type="search">
+      <select class="field" id="tagf"></select>
+      <div class="viewtabs" id="views" role="group">
+        <button data-v="recent" aria-pressed="true"></button>
+        <button data-v="vaak" aria-pressed="false"></button>
+        <button data-v="az" aria-pressed="false"></button>
+      </div>
+      <select class="field" id="trkf"></select>
+      <div class="summary" id="summary" aria-live="polite"></div>
+    </div>
+    <div class="carlist" id="carlist"></div>
+  </aside>
+
+  <div class="main">
+    <div class="panel">
+      <div class="bar">
+        <span class="bar-label" id="l-selected"></span>
+        <span class="hint" id="selhint"></span>
+        <button class="btn" id="clearsel"></button>
+      </div>
+      <div class="chips" id="chips"></div>
+    </div>
+
+    <div class="panel" id="ctrls" hidden>
+      <div class="bar">
+        <span class="bar-label" id="l-compare"></span>
+        <span class="hint" id="refhint"></span>
+        <button class="btn" id="clearrefs"></button>
+        <button class="btn" id="tog" aria-pressed="false"></button>
+        <button class="btn" id="force" aria-pressed="false" hidden></button>
+        <span class="count" id="rowcount"></span>
+      </div>
+      <div class="warn" id="mixwarn" hidden></div>
+      <div class="legend" id="legend"></div>
+    </div>
+
+    <div class="scroller" id="scroller">
+      <div class="empty" id="empty"><strong id="empty-t"></strong><span id="empty-b"></span></div>
+      <table id="tbl" hidden><thead><tr id="hrow"></tr></thead><tbody id="tb"></tbody></table>
+    </div>
+
+    <div class="panel" id="pluk" hidden>
+      <h2 id="l-pluck"></h2>
+      <div class="bar">
+        <span class="bar-label" id="l-startfrom"></span>
+        <select class="btn" id="fill"></select>
+        <button class="btn" id="clearpicks"></button>
+        <button class="btn" id="copy"></button>
+        <span class="count" id="count"></span>
+      </div>
+      <p class="hint" style="margin:0" id="pluckhint"></p>
+      <div class="buildwrap"><table class="build" id="buildtbl"></table></div>
+      <pre class="ini" id="out"></pre>
+      <p class="hint" style="margin:0" id="savehint"></p>
+    </div>
+
+    <details class="about">
+      <summary id="about-t"></summary>
+      <ol id="about-list"></ol>
+      <p class="about-note" id="about-note"></p>
+    </details>
+
+    <div class="panel" id="kit">
+      <h2 id="kit-t"></h2>
+      <p class="hint" style="margin:0" id="kit-b"></p>
+      <ol class="ways" id="kit-ways"></ol>
+      <pre class="ini" id="kit-prompt"></pre>
+      <p class="hint" style="margin:0" id="kit-files-t"></p>
+      <ul class="files" id="kit-files"></ul>
+      <div class="bar"><button class="btn" id="kit-dl"></button><span class="count" id="kit-s"></span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/*ACDATA*/
+
+/* ============ languages ============ */
+const LANGS = { en:"English", nl:"Nederlands", de:"Deutsch", es:"Español", fr:"Français" };
+
+const STR = {
+  en:{
+    title:"Setupbook", stamp:"{0} cars · {1} setups · updated {2}",
+    searchPh:"Search car or brand", allClasses:"All classes", allTracks:"All tracks", noTrack:"No track",
+    vRecent:"Recent", vOften:"Often", vAZ:"A–Z", order:"Order",
+    carsN:"{0} cars", summaryAll:"<b>{0}</b> cars · <b>{1}</b> setups",
+    summaryNarrow:"{0} of {1} cars · {2} of {3} setups",
+    pinned:"Pinned", pin:"Pin to top", unpin:"Unpin",
+    hRecentTop:"Last worked on · top 12", hRecent:"Last worked on{0} · {1}",
+    hOftenTop:"Most revisited · top 12", hOften:"Most revisited{0} · {1}",
+    hAll:"All cars{0} · {1}", onTrack:" on {0}",
+    more:"{0} more cars — search above or pick A–Z.", noCars:"No car found.",
+    day:"{0} day", days:"{0} days", autosaveOnly:"autosave only", autoTag:"auto",
+    showAllIn:"Show everything in {0}",
+    selected:"Selected", selEmpty:"Open a car on the left and tick its setups.",
+    selSum:"{0} · {1} · {2}", nSetup:"{0} setup", nSetups:"{0} setups",
+    nCar:"{0} car", nCars:"{0} cars", nTrack:"{0} track", nTracks:"{0} tracks",
+    clearAll:"Clear all", compare:"Compare", clearCompare:"Clear comparison",
+    onlyDiff:"Only what differs", colorAnyway:"Colour anyway", rows:"{0} of {1} rows",
+    mixWarn:"You are looking at {0} cars: {1}. The numbers are click positions on each car's own scale, so they do not share a ruler. Colour comparison is off for that reason; <b>{2}</b> switches it on regardless.",
+    refNone:"Click a column header to make it A, click a second one for B.",
+    refOne:"A is {0}. Click a second header for B.", refTwo:"A is {0}, B is {1}.",
+    lgPicked:"picked", lgHigher:"higher than {0}", lgLower:"lower than {0}",
+    lgEqA:"same as A", lgEqB:"same as B", lgBetween:"in between", lgBeyond:"beyond both",
+    lgNone:"No colouring active — all setups rank equally.",
+    emptyT:"Nothing selected yet", emptyB:"Find a car on the left, open it and tick the setups you want side by side.",
+    colSetting:"Setting", pluck:"Build a new setup", startFrom:"Start from", chooseSetup:"choose a setup…",
+    clearPicks:"Clear picks", copyIni:"Copy new setup", copied:"Copied", selectBelow:"Select below",
+    pluckHint:"Click a cell in the table to pick that value. The black outline shows what you chose.",
+    picked:"<strong>{0}</strong> of {1} settings picked",
+    saveHint:"That is your new setup. Paste it into a new .ini file under Documents\\Assetto Corsa\\setups\\<car>\\<track>\\ and it shows up in the game.",
+    pluckEmpty:"Nothing picked yet. Choose a starting point above, or click cells in the table.",
+    iniMix1:"; careful: picked from {0} different cars ({1})", iniMix2:"; those values do not share a scale",
+    remove:"Remove",
+    srcBuiltin:"Built-in library", srcOwn:"Your own folder", loadFolder:"Load my setups folder",
+    backBuiltin:"Back to the built-in one", srcReading:"Reading…",
+    srcHint:"Point it at your Assetto Corsa \"setups\" folder. Nothing is uploaded — the page reads it in your own browser.",
+    srcHintOwn:"Read straight from your folder. Nothing left your computer.",
+    srcNone:"No setup files found in that folder.",
+    lede:"Every setup you own, side by side, in the units the game shows you.", bValue:"Value", bSource:"From", bNotPicked:"not picked", bStock:"open", kitT:"Take this with you", kitB:"This page is one file and works on its own. The full package — the script that rebuilds it from your own setups, the template, and instructions written for Claude Code — comes as a zip from whoever sent you this. Here is what to do with it.", kitDl:"Download the package", kitCopy:"Copy the prompt", kitSaved:"Saved", kitCopied:"Copied", kitNo:"Not available in this view",
+    kitW:["<b>Just look.</b> Open AC-Setupbook.html. It starts with someone else's library so you can see it working, then <b>Load my setups folder</b> points it at your own Documents\\Assetto Corsa\\setups.",
+      "<b>Make it yours.</b> Double-click Run.cmd. It finds your setups folder and your Assetto Corsa install by itself and rebuilds the page from them, in about ten seconds. Run it again whenever you have made new setups.",
+      "<b>Let Claude do it.</b> Open the folder with Claude Code and paste the line below."],
+    kitPrompt:"Read CLAUDE.md in this folder and set it up for me. Rebuild the page from my own\nAssetto Corsa setups folder, then tell me where the finished AC-Setupbook.html is.\nIf you can't find my setups folder or my Assetto Corsa install, ask me instead of guessing.",
+    kitFilesT:"What is in the package:",
+    kitFiles:["the whole thing, one file, works offline","double-click to rebuild it from your own setups","the script Run.cmd calls, if you would rather run it yourself","the page without data; the script fills it","instructions for Claude Code","the short version of all this"], aboutT:"How this works",
+    about:["Pick a car on the left and tick its setups. Each one becomes a column.",
+      "Click a column header to make it reference <b>A</b>, click a second for <b>B</b>. Only then does the table colour, and only against those two.",
+      "<b>Only what differs</b> hides every row where all the columns agree.",
+      "Click any cell to pluck that value. The ini builds up at the bottom, ready to paste into a file in your setups folder.",
+      "<b>Load my setups folder</b> points the page at your own Documents\\Assetto Corsa\\setups. Your browser reads it locally — nothing is uploaded, there is no server."],
+    aboutNote:"The numbers are click positions on each car's own scale, not real units. Within one car they compare exactly; between two cars they do not, not even two cars in the same class. That is why colouring switches itself off when you mix cars.",
+    gAero:"Aero", gTrans:"Transmission", gSusp:"Suspension", gDamp:"Dampers",
+    gTyres:"Tyres and alignment", gDiff:"Diff", gBrakes:"Brakes", gAids:"Aids", gOther:"Other",
+    pF:" front", pR:" rear", pHF:" heave front", pHR:" heave rear", gear:"{0} gear", wingN:"Wing {0}",
+    L:{ WING_1:"Front wing", WING_2:"Rear wing", FINAL_RATIO:"Final drive",
+        ARB_FRONT:"Anti-roll bar front", ARB_REAR:"Anti-roll bar rear",
+        SPRING_RATE:"Spring", ROD_LENGTH:"Ride height", PACKER_RANGE:"Packer", BUMP_STOP_RATE:"Bump stop",
+        DAMP_BUMP:"Bump", DAMP_FAST_BUMP:"Fast bump", DAMP_REBOUND:"Rebound", DAMP_FAST_REBOUND:"Fast rebound",
+        PRESSURE:"Tyre pressure", CAMBER:"Camber", TOE_OUT:"Toe", TYRES:"Compound",
+        DIFF_POWER:"Diff power", DIFF_COAST:"Diff coast", DIFF_PRELOAD:"Diff preload",
+        FRONT_BIAS:"Brake bias front", BRAKE_POWER_MULT:"Brake power",
+        ABS:"ABS", TRACTION_CONTROL:"Traction control", ENGINE_LIMITER:"Rev limiter", FUEL:"Fuel" }
+  },
+  nl:{
+    title:"Setupboek", stamp:"{0} auto's · {1} setups · bijgewerkt {2}",
+    searchPh:"Zoek op auto of merk", allClasses:"Alle klassen", allTracks:"Alle banen", noTrack:"Geen baan",
+    vRecent:"Recent", vOften:"Vaak", vAZ:"A–Z", order:"Volgorde",
+    carsN:"{0} auto's", summaryAll:"<b>{0}</b> auto's · <b>{1}</b> setups",
+    summaryNarrow:"{0} van {1} auto's · {2} van {3} setups",
+    pinned:"Vastgezet", pin:"Vastzetten bovenaan", unpin:"Losmaken",
+    hRecentTop:"Laatst gesleuteld · top 12", hRecent:"Laatst gesleuteld{0} · {1}",
+    hOftenTop:"Vaakst aangeraakt · top 12", hOften:"Vaakst aangeraakt{0} · {1}",
+    hAll:"Alle auto's{0} · {1}", onTrack:" op {0}",
+    more:"Nog {0} auto's — zoek hierboven of kies A–Z.", noCars:"Geen auto gevonden.",
+    day:"{0} dag", days:"{0} dagen", autosaveOnly:"alleen autosave", autoTag:"auto",
+    showAllIn:"Toon alles in {0}",
+    selected:"Gekozen", selEmpty:"Klik links een auto open en vink setups aan.",
+    selSum:"{0} · {1} · {2}", nSetup:"{0} setup", nSetups:"{0} setups",
+    nCar:"{0} auto", nCars:"{0} auto's", nTrack:"{0} baan", nTracks:"{0} banen",
+    clearAll:"Wis alles", compare:"Vergelijk", clearCompare:"Wis vergelijking",
+    onlyDiff:"Alleen wat verschilt", colorAnyway:"Kleur toch", rows:"{0} van {1} regels",
+    mixWarn:"Je kijkt naar {0} auto's: {1}. De cijfers zijn klikposities op de schaal van elke auto apart, dus ze liggen niet op dezelfde meetlat. De kleurvergelijking staat daarom uit; met <b>{2}</b> zet je hem alsnog aan.",
+    refNone:"Klik een kolomkop om hem als A te kiezen, klik een tweede voor B.",
+    refOne:"A is {0}. Klik een tweede kop voor B.", refTwo:"A is {0}, B is {1}.",
+    lgPicked:"geplukt", lgHigher:"hoger dan {0}", lgLower:"lager dan {0}",
+    lgEqA:"gelijk aan A", lgEqB:"gelijk aan B", lgBetween:"ertussenin", lgBeyond:"voorbij allebei",
+    lgNone:"Geen kleuring actief — alle setups staan gelijkwaardig.",
+    emptyT:"Nog niets gekozen", emptyB:"Zoek links een auto, klap hem open en vink de setups aan die je naast elkaar wilt zien.",
+    colSetting:"Instelling", pluck:"Nieuwe setup samenstellen", startFrom:"Begin vanaf", chooseSetup:"kies een setup…",
+    clearPicks:"Wis keuzes", copyIni:"Kopieer nieuwe setup", copied:"Gekopieerd", selectBelow:"Selecteer hieronder",
+    pluckHint:"Klik een cel in de tabel om die waarde te plukken. De zwarte rand laat zien wat je gekozen hebt.",
+    picked:"<strong>{0}</strong> van {1} instellingen geplukt",
+    saveHint:"Dat is je nieuwe setup. Plak hem in een nieuw .ini-bestand onder Documents\\Assetto Corsa\\setups\\<auto>\\<baan>\\ en hij staat in de game.",
+    pluckEmpty:"Nog niets geplukt. Kies hierboven een startpunt, of klik cellen in de tabel.",
+    iniMix1:"; let op: geplukt uit {0} verschillende auto's ({1})", iniMix2:"; die waarden liggen niet op dezelfde schaal",
+    remove:"Verwijder",
+    srcBuiltin:"Ingebouwde bibliotheek", srcOwn:"Je eigen map", loadFolder:"Laad mijn setups-map",
+    backBuiltin:"Terug naar de ingebouwde", srcReading:"Bezig met lezen…",
+    srcHint:"Wijs je Assetto Corsa \"setups\"-map aan. Er wordt niets geüpload — de pagina leest hem in je eigen browser.",
+    srcHintOwn:"Rechtstreeks uit je eigen map gelezen. Er is niets van je pc af gegaan.",
+    srcNone:"Geen setup-bestanden gevonden in die map.",
+    lede:"Al je setups naast elkaar, in de eenheden die de game je toont.", bValue:"Waarde", bSource:"Uit", bNotPicked:"niet gekozen", bStock:"open", kitT:"Neem dit mee", kitB:"Deze pagina is één bestand en werkt op zichzelf. Het volledige pakket — het script dat hem herbouwt uit je eigen setups, het sjabloon, en instructies voor Claude Code — komt als zipje van degene die je dit stuurde. Dit doe je ermee.", kitDl:"Download het pakket", kitCopy:"Kopieer de prompt", kitSaved:"Opgeslagen", kitCopied:"Gekopieerd", kitNo:"Niet beschikbaar hier",
+    kitW:["<b>Alleen kijken.</b> Open AC-Setupbook.html. Hij begint met andermans bibliotheek zodat je ziet dat het werkt; met <b>Load my setups folder</b> wijs je je eigen Documents\\Assetto Corsa\\setups aan.",
+      "<b>Van jezelf maken.</b> Dubbelklik Run.cmd. Die vindt je setups-map en je AC-installatie zelf en bouwt de pagina eruit op, in een seconde of tien. Draai hem opnieuw wanneer je nieuwe setups hebt.",
+      "<b>Claude het laten doen.</b> Open de map met Claude Code en plak de regel hieronder."],
+    kitPrompt:"Read CLAUDE.md in this folder and set it up for me. Rebuild the page from my own\nAssetto Corsa setups folder, then tell me where the finished AC-Setupbook.html is.\nIf you can't find my setups folder or my Assetto Corsa install, ask me instead of guessing.",
+    kitFilesT:"Wat er in het pakket zit:",
+    kitFiles:["het geheel, één bestand, werkt offline","dubbelklikken om hem uit je eigen setups te herbouwen","het script dat Run.cmd aanroept, als je het liever zelf draait","de pagina zonder data; het script vult hem","instructies voor Claude Code","de korte versie van dit alles"], aboutT:"Hoe dit werkt",
+    about:["Kies links een auto en vink zijn setups aan. Elke setup wordt een kolom.",
+      "Klik een kolomkop om hem tot referentie <b>A</b> te maken, klik een tweede voor <b>B</b>. Pas dan kleurt de tabel, en alleen ten opzichte van die twee.",
+      "<b>Alleen wat verschilt</b> verbergt elke regel waar alle kolommen het eens zijn.",
+      "Klik een cel om die waarde te plukken. Onderaan bouwt de ini zich op, klaar om in een bestand in je setups-map te plakken.",
+      "<b>Laad mijn setups-map</b> richt de pagina op je eigen Documents\\Assetto Corsa\\setups. Je browser leest hem lokaal — er wordt niets geüpload, er is geen server."],
+    aboutNote:"De cijfers zijn klikposities op de schaal van elke auto apart, geen echte eenheden. Binnen één auto vergelijken ze exact; tussen twee auto's niet, ook niet bij twee auto's uit dezelfde klasse. Daarom zet de kleuring zichzelf uit zodra je auto's mengt.",
+    gAero:"Aero", gTrans:"Transmissie", gSusp:"Vering", gDamp:"Dempers",
+    gTyres:"Banden en uitlijning", gDiff:"Diff", gBrakes:"Remmen", gAids:"Hulpsystemen", gOther:"Overig",
+    pF:" voor", pR:" achter", pHF:" heave voor", pHR:" heave achter", gear:"{0} versnelling", wingN:"Vleugel {0}",
+    L:{ WING_1:"Voorvleugel", WING_2:"Achtervleugel", FINAL_RATIO:"Eindoverbrenging",
+        ARB_FRONT:"Stabilisator voor", ARB_REAR:"Stabilisator achter",
+        SPRING_RATE:"Veer", ROD_LENGTH:"Rijhoogte", PACKER_RANGE:"Packer", BUMP_STOP_RATE:"Bumpstop",
+        DAMP_BUMP:"Bump", DAMP_FAST_BUMP:"Fast bump", DAMP_REBOUND:"Rebound", DAMP_FAST_REBOUND:"Fast rebound",
+        PRESSURE:"Banddruk", CAMBER:"Camber", TOE_OUT:"Toe", TYRES:"Compound",
+        DIFF_POWER:"Diff power", DIFF_COAST:"Diff coast", DIFF_PRELOAD:"Diff preload",
+        FRONT_BIAS:"Rembalans voor", BRAKE_POWER_MULT:"Remdruk",
+        ABS:"ABS", TRACTION_CONTROL:"Tractiecontrole", ENGINE_LIMITER:"Toerenbegrenzer", FUEL:"Brandstof" }
+  },
+  de:{
+    title:"Setup-Buch", stamp:"{0} Autos · {1} Setups · aktualisiert {2}",
+    searchPh:"Auto oder Marke suchen", allClasses:"Alle Klassen", allTracks:"Alle Strecken", noTrack:"Keine Strecke",
+    vRecent:"Neu", vOften:"Oft", vAZ:"A–Z", order:"Reihenfolge",
+    carsN:"{0} Autos", summaryAll:"<b>{0}</b> Autos · <b>{1}</b> Setups",
+    summaryNarrow:"{0} von {1} Autos · {2} von {3} Setups",
+    pinned:"Angeheftet", pin:"Nach oben heften", unpin:"Lösen",
+    hRecentTop:"Zuletzt bearbeitet · Top 12", hRecent:"Zuletzt bearbeitet{0} · {1}",
+    hOftenTop:"Am häufigsten · Top 12", hOften:"Am häufigsten{0} · {1}",
+    hAll:"Alle Autos{0} · {1}", onTrack:" auf {0}",
+    more:"Noch {0} Autos — oben suchen oder A–Z wählen.", noCars:"Kein Auto gefunden.",
+    day:"{0} Tag", days:"{0} Tage", autosaveOnly:"nur Autosave", autoTag:"auto",
+    showAllIn:"Alles in {0} zeigen",
+    selected:"Gewählt", selEmpty:"Links ein Auto öffnen und Setups anhaken.",
+    selSum:"{0} · {1} · {2}", nSetup:"{0} Setup", nSetups:"{0} Setups",
+    nCar:"{0} Auto", nCars:"{0} Autos", nTrack:"{0} Strecke", nTracks:"{0} Strecken",
+    clearAll:"Alles löschen", compare:"Vergleich", clearCompare:"Vergleich löschen",
+    onlyDiff:"Nur Unterschiede", colorAnyway:"Trotzdem färben", rows:"{0} von {1} Zeilen",
+    mixWarn:"Du siehst {0} Autos: {1}. Die Zahlen sind Klickpositionen auf der Skala des jeweiligen Autos, sie teilen also kein Maß. Deshalb ist die Farbgebung aus; mit <b>{2}</b> schaltest du sie trotzdem ein.",
+    refNone:"Auf einen Spaltenkopf klicken für A, auf einen zweiten für B.",
+    refOne:"A ist {0}. Klicke einen zweiten Kopf für B.", refTwo:"A ist {0}, B ist {1}.",
+    lgPicked:"gewählt", lgHigher:"höher als {0}", lgLower:"niedriger als {0}",
+    lgEqA:"gleich A", lgEqB:"gleich B", lgBetween:"dazwischen", lgBeyond:"über beide hinaus",
+    lgNone:"Keine Färbung aktiv — alle Setups gleichrangig.",
+    emptyT:"Noch nichts gewählt", emptyB:"Links ein Auto suchen, öffnen und die Setups anhaken, die du nebeneinander sehen willst.",
+    colSetting:"Einstellung", pluck:"Neues Setup bauen", startFrom:"Beginnen mit", chooseSetup:"Setup wählen…",
+    clearPicks:"Auswahl löschen", copyIni:"Neues Setup kopieren", copied:"Kopiert", selectBelow:"Unten markieren",
+    pluckHint:"Klicke eine Zelle in der Tabelle, um den Wert zu übernehmen. Der schwarze Rahmen zeigt deine Wahl.",
+    picked:"<strong>{0}</strong> von {1} Einstellungen gewählt",
+    saveHint:"Das ist dein neues Setup. Füge es in eine neue .ini-Datei unter Documents\\Assetto Corsa\\setups\\<Auto>\\<Strecke>\\ ein, dann erscheint es im Spiel.",
+    pluckEmpty:"Noch nichts gewählt. Oben einen Startpunkt wählen oder Zellen anklicken.",
+    iniMix1:"; Achtung: aus {0} verschiedenen Autos gewählt ({1})", iniMix2:"; diese Werte teilen keine Skala",
+    remove:"Entfernen",
+    srcBuiltin:"Mitgelieferte Sammlung", srcOwn:"Dein eigener Ordner", loadFolder:"Meinen Setup-Ordner laden",
+    backBuiltin:"Zurück zur mitgelieferten", srcReading:"Wird gelesen…",
+    srcHint:"Wähle deinen Assetto-Corsa-Ordner \"setups\". Nichts wird hochgeladen — die Seite liest ihn in deinem Browser.",
+    srcHintOwn:"Direkt aus deinem Ordner gelesen. Nichts hat deinen Rechner verlassen.",
+    srcNone:"In diesem Ordner wurden keine Setup-Dateien gefunden.",
+    lede:"Alle deine Setups nebeneinander, in den Einheiten, die das Spiel zeigt.", bValue:"Wert", bSource:"Aus", bNotPicked:"nicht gewählt", bStock:"offen", kitT:"Nimm es mit", kitB:"Diese Seite ist eine Datei und funktioniert für sich. Das ganze Paket — das Skript, das sie aus deinen eigenen Setups neu baut, die Vorlage und eine Anleitung für Claude Code — kommt als Zip von dem, der dir das geschickt hat. Damit machst du Folgendes.", kitDl:"Paket laden", kitCopy:"Prompt kopieren", kitSaved:"Gespeichert", kitCopied:"Kopiert", kitNo:"Hier nicht verfügbar",
+    kitW:["<b>Nur ansehen.</b> Öffne AC-Setupbook.html. Es startet mit einer fremden Sammlung, damit du es arbeiten siehst; <b>Load my setups folder</b> richtet es auf dein eigenes Documents\\Assetto Corsa\\setups.",
+      "<b>Zu deinem machen.</b> Doppelklick auf Run.cmd. Es findet deinen Setup-Ordner und deine AC-Installation selbst und baut die Seite daraus neu, in etwa zehn Sekunden.",
+      "<b>Claude machen lassen.</b> Öffne den Ordner mit Claude Code und füge die Zeile unten ein."],
+    kitPrompt:"Read CLAUDE.md in this folder and set it up for me. Rebuild the page from my own\nAssetto Corsa setups folder, then tell me where the finished AC-Setupbook.html is.\nIf you can't find my setups folder or my Assetto Corsa install, ask me instead of guessing.",
+    kitFilesT:"Was im Paket ist:",
+    kitFiles:["das Ganze, eine Datei, funktioniert offline","doppelklicken, um es aus deinen eigenen Setups neu zu bauen","das Skript, das Run.cmd aufruft, falls du es lieber selbst startest","die Seite ohne Daten; das Skript füllt sie","Anleitung für Claude Code","die Kurzfassung von all dem"], aboutT:"So funktioniert es",
+    about:["Wähle links ein Auto und hake seine Setups an. Jedes wird eine Spalte.",
+      "Klicke einen Spaltenkopf für Referenz <b>A</b>, einen zweiten für <b>B</b>. Erst dann färbt die Tabelle, und nur gegen diese beiden.",
+      "<b>Nur Unterschiede</b> blendet jede Zeile aus, in der alle Spalten übereinstimmen.",
+      "Klicke eine Zelle, um den Wert zu übernehmen. Unten baut sich die Ini auf, fertig zum Einfügen in eine Datei in deinem Setup-Ordner.",
+      "<b>Meinen Setup-Ordner laden</b> richtet die Seite auf dein eigenes Documents\\Assetto Corsa\\setups. Dein Browser liest ihn lokal — nichts wird hochgeladen, es gibt keinen Server."],
+    aboutNote:"Die Zahlen sind Klickpositionen auf der Skala des jeweiligen Autos, keine echten Einheiten. Innerhalb eines Autos vergleichen sie exakt, zwischen zwei Autos nicht — auch nicht bei zwei Autos derselben Klasse. Deshalb schaltet sich die Färbung ab, sobald du Autos mischst.",
+    gAero:"Aero", gTrans:"Getriebe", gSusp:"Fahrwerk", gDamp:"Dämpfer",
+    gTyres:"Reifen und Spur", gDiff:"Differenzial", gBrakes:"Bremsen", gAids:"Hilfen", gOther:"Sonstiges",
+    pF:" vorn", pR:" hinten", pHF:" Heave vorn", pHR:" Heave hinten", gear:"{0} Gang", wingN:"Flügel {0}",
+    L:{ WING_1:"Frontflügel", WING_2:"Heckflügel", FINAL_RATIO:"Achsübersetzung",
+        ARB_FRONT:"Stabilisator vorn", ARB_REAR:"Stabilisator hinten",
+        SPRING_RATE:"Feder", ROD_LENGTH:"Fahrhöhe", PACKER_RANGE:"Packer", BUMP_STOP_RATE:"Anschlagpuffer",
+        DAMP_BUMP:"Druckstufe", DAMP_FAST_BUMP:"Schnelle Druckstufe", DAMP_REBOUND:"Zugstufe", DAMP_FAST_REBOUND:"Schnelle Zugstufe",
+        PRESSURE:"Reifendruck", CAMBER:"Sturz", TOE_OUT:"Spur", TYRES:"Mischung",
+        DIFF_POWER:"Diff Zug", DIFF_COAST:"Diff Schub", DIFF_PRELOAD:"Diff Vorspannung",
+        FRONT_BIAS:"Bremsbalance vorn", BRAKE_POWER_MULT:"Bremskraft",
+        ABS:"ABS", TRACTION_CONTROL:"Traktionskontrolle", ENGINE_LIMITER:"Drehzahlbegrenzer", FUEL:"Kraftstoff" }
+  },
+  es:{
+    title:"Libro de reglajes", stamp:"{0} coches · {1} reglajes · actualizado {2}",
+    searchPh:"Buscar coche o marca", allClasses:"Todas las clases", allTracks:"Todos los circuitos", noTrack:"Sin circuito",
+    vRecent:"Reciente", vOften:"Frecuente", vAZ:"A–Z", order:"Orden",
+    carsN:"{0} coches", summaryAll:"<b>{0}</b> coches · <b>{1}</b> reglajes",
+    summaryNarrow:"{0} de {1} coches · {2} de {3} reglajes",
+    pinned:"Fijados", pin:"Fijar arriba", unpin:"Soltar",
+    hRecentTop:"Últimos tocados · top 12", hRecent:"Últimos tocados{0} · {1}",
+    hOftenTop:"Más retomados · top 12", hOften:"Más retomados{0} · {1}",
+    hAll:"Todos los coches{0} · {1}", onTrack:" en {0}",
+    more:"{0} coches más — busca arriba o elige A–Z.", noCars:"Ningún coche encontrado.",
+    day:"{0} día", days:"{0} días", autosaveOnly:"solo autoguardado", autoTag:"auto",
+    showAllIn:"Mostrar todo en {0}",
+    selected:"Elegidos", selEmpty:"Abre un coche a la izquierda y marca sus reglajes.",
+    selSum:"{0} · {1} · {2}", nSetup:"{0} reglaje", nSetups:"{0} reglajes",
+    nCar:"{0} coche", nCars:"{0} coches", nTrack:"{0} circuito", nTracks:"{0} circuitos",
+    clearAll:"Borrar todo", compare:"Comparar", clearCompare:"Borrar comparación",
+    onlyDiff:"Solo lo que cambia", colorAnyway:"Colorear igual", rows:"{0} de {1} filas",
+    mixWarn:"Estás viendo {0} coches: {1}. Los números son posiciones de clic en la escala de cada coche, así que no comparten medida. Por eso el color está apagado; con <b>{2}</b> lo enciendes de todos modos.",
+    refNone:"Haz clic en una cabecera para elegirla como A, y en otra para B.",
+    refOne:"A es {0}. Haz clic en otra cabecera para B.", refTwo:"A es {0}, B es {1}.",
+    lgPicked:"elegido", lgHigher:"mayor que {0}", lgLower:"menor que {0}",
+    lgEqA:"igual que A", lgEqB:"igual que B", lgBetween:"intermedio", lgBeyond:"más allá de ambos",
+    lgNone:"Sin coloreado — todos los reglajes por igual.",
+    emptyT:"Nada elegido todavía", emptyB:"Busca un coche a la izquierda, ábrelo y marca los reglajes que quieras ver juntos.",
+    colSetting:"Ajuste", pluck:"Crear un reglaje nuevo", startFrom:"Empezar desde", chooseSetup:"elige un reglaje…",
+    clearPicks:"Borrar selección", copyIni:"Copiar reglaje nuevo", copied:"Copiado", selectBelow:"Selecciona abajo",
+    pluckHint:"Haz clic en una celda para tomar ese valor. El borde negro muestra lo que elegiste.",
+    picked:"<strong>{0}</strong> de {1} ajustes elegidos",
+    saveHint:"Ese es tu reglaje nuevo. Pégalo en un archivo .ini nuevo en Documents\\Assetto Corsa\\setups\\<coche>\\<circuito>\\ y aparecerá en el juego.",
+    pluckEmpty:"Nada elegido aún. Elige un punto de partida arriba, o haz clic en celdas.",
+    iniMix1:"; atención: tomado de {0} coches distintos ({1})", iniMix2:"; esos valores no comparten escala",
+    remove:"Quitar",
+    srcBuiltin:"Biblioteca incluida", srcOwn:"Tu propia carpeta", loadFolder:"Cargar mi carpeta de reglajes",
+    backBuiltin:"Volver a la incluida", srcReading:"Leyendo…",
+    srcHint:"Señala tu carpeta \"setups\" de Assetto Corsa. No se sube nada — la página la lee en tu navegador.",
+    srcHintOwn:"Leído directamente de tu carpeta. Nada salió de tu ordenador.",
+    srcNone:"No se encontraron reglajes en esa carpeta.",
+    lede:"Todos tus reglajes uno al lado del otro, en las unidades que muestra el juego.", bValue:"Valor", bSource:"De", bNotPicked:"sin elegir", bStock:"abierto", kitT:"Llévatelo", kitB:"Esta página es un archivo y funciona sola. El paquete completo — el script que la reconstruye desde tus reglajes, la plantilla e instrucciones para Claude Code — llega como zip de quien te envió esto. Esto es lo que haces con él.", kitDl:"Descargar el paquete", kitCopy:"Copiar el mensaje", kitSaved:"Guardado", kitCopied:"Copiado", kitNo:"No disponible aquí",
+    kitW:["<b>Solo mirar.</b> Abre AC-Setupbook.html. Arranca con la biblioteca de otro para que lo veas funcionar; <b>Load my setups folder</b> lo apunta a tu propio Documents\\Assetto Corsa\\setups.",
+      "<b>Hacerlo tuyo.</b> Haz doble clic en Run.cmd. Encuentra tu carpeta de reglajes y tu instalación de AC por su cuenta y reconstruye la página, en unos diez segundos.",
+      "<b>Que lo haga Claude.</b> Abre la carpeta con Claude Code y pega la línea de abajo."],
+    kitPrompt:"Read CLAUDE.md in this folder and set it up for me. Rebuild the page from my own\nAssetto Corsa setups folder, then tell me where the finished AC-Setupbook.html is.\nIf you can't find my setups folder or my Assetto Corsa install, ask me instead of guessing.",
+    kitFilesT:"Qué hay en el paquete:",
+    kitFiles:["todo el asunto, un archivo, funciona sin conexión","doble clic para reconstruirlo desde tus reglajes","el script que llama Run.cmd, si prefieres ejecutarlo tú","la página sin datos; el script la rellena","instrucciones para Claude Code","la versión corta de todo esto"], aboutT:"Cómo funciona",
+    about:["Elige un coche a la izquierda y marca sus reglajes. Cada uno se vuelve una columna.",
+      "Haz clic en una cabecera para hacerla referencia <b>A</b>, y en otra para <b>B</b>. Solo entonces se colorea la tabla, y solo frente a esas dos.",
+      "<b>Solo lo que cambia</b> oculta cada fila en la que todas las columnas coinciden.",
+      "Haz clic en una celda para tomar ese valor. Abajo se construye el ini, listo para pegarlo en un archivo de tu carpeta de reglajes.",
+      "<b>Cargar mi carpeta de reglajes</b> apunta la página a tu propio Documents\\Assetto Corsa\\setups. Tu navegador la lee localmente — no se sube nada, no hay servidor."],
+    aboutNote:"Los números son posiciones de clic en la escala propia de cada coche, no unidades reales. Dentro de un coche comparan exactamente; entre dos coches no, ni siquiera entre dos de la misma clase. Por eso el coloreado se apaga solo cuando mezclas coches.",
+    gAero:"Aero", gTrans:"Transmisión", gSusp:"Suspensión", gDamp:"Amortiguadores",
+    gTyres:"Neumáticos y alineación", gDiff:"Diferencial", gBrakes:"Frenos", gAids:"Ayudas", gOther:"Otros",
+    pF:" delantero", pR:" trasero", pHF:" heave delantero", pHR:" heave trasero", gear:"{0} marcha", wingN:"Alerón {0}",
+    L:{ WING_1:"Alerón delantero", WING_2:"Alerón trasero", FINAL_RATIO:"Relación final",
+        ARB_FRONT:"Barra estabilizadora delantera", ARB_REAR:"Barra estabilizadora trasera",
+        SPRING_RATE:"Muelle", ROD_LENGTH:"Altura", PACKER_RANGE:"Tope", BUMP_STOP_RATE:"Tope de compresión",
+        DAMP_BUMP:"Compresión", DAMP_FAST_BUMP:"Compresión rápida", DAMP_REBOUND:"Extensión", DAMP_FAST_REBOUND:"Extensión rápida",
+        PRESSURE:"Presión", CAMBER:"Caída", TOE_OUT:"Convergencia", TYRES:"Compuesto",
+        DIFF_POWER:"Diff aceleración", DIFF_COAST:"Diff retención", DIFF_PRELOAD:"Diff precarga",
+        FRONT_BIAS:"Reparto de frenada delantero", BRAKE_POWER_MULT:"Potencia de frenada",
+        ABS:"ABS", TRACTION_CONTROL:"Control de tracción", ENGINE_LIMITER:"Limitador", FUEL:"Combustible" }
+  },
+  fr:{
+    title:"Carnet de réglages", stamp:"{0} voitures · {1} réglages · mis à jour {2}",
+    searchPh:"Chercher voiture ou marque", allClasses:"Toutes les classes", allTracks:"Tous les circuits", noTrack:"Sans circuit",
+    vRecent:"Récent", vOften:"Souvent", vAZ:"A–Z", order:"Ordre",
+    carsN:"{0} voitures", summaryAll:"<b>{0}</b> voitures · <b>{1}</b> réglages",
+    summaryNarrow:"{0} sur {1} voitures · {2} sur {3} réglages",
+    pinned:"Épinglés", pin:"Épingler en haut", unpin:"Détacher",
+    hRecentTop:"Derniers touchés · top 12", hRecent:"Derniers touchés{0} · {1}",
+    hOftenTop:"Les plus repris · top 12", hOften:"Les plus repris{0} · {1}",
+    hAll:"Toutes les voitures{0} · {1}", onTrack:" sur {0}",
+    more:"Encore {0} voitures — cherche ci-dessus ou choisis A–Z.", noCars:"Aucune voiture trouvée.",
+    day:"{0} jour", days:"{0} jours", autosaveOnly:"sauvegarde auto seulement", autoTag:"auto",
+    showAllIn:"Tout montrer dans {0}",
+    selected:"Choisis", selEmpty:"Ouvre une voiture à gauche et coche ses réglages.",
+    selSum:"{0} · {1} · {2}", nSetup:"{0} réglage", nSetups:"{0} réglages",
+    nCar:"{0} voiture", nCars:"{0} voitures", nTrack:"{0} circuit", nTracks:"{0} circuits",
+    clearAll:"Tout effacer", compare:"Comparer", clearCompare:"Effacer la comparaison",
+    onlyDiff:"Seulement ce qui diffère", colorAnyway:"Colorer quand même", rows:"{0} sur {1} lignes",
+    mixWarn:"Tu regardes {0} voitures : {1}. Les nombres sont des positions de clic sur l'échelle propre à chaque voiture, sans mesure commune. La coloration est donc coupée ; <b>{2}</b> l'active malgré tout.",
+    refNone:"Clique un en-tête de colonne pour A, un second pour B.",
+    refOne:"A est {0}. Clique un second en-tête pour B.", refTwo:"A est {0}, B est {1}.",
+    lgPicked:"choisi", lgHigher:"plus haut que {0}", lgLower:"plus bas que {0}",
+    lgEqA:"égal à A", lgEqB:"égal à B", lgBetween:"entre les deux", lgBeyond:"au-delà des deux",
+    lgNone:"Aucune coloration — tous les réglages à égalité.",
+    emptyT:"Rien de choisi pour l'instant", emptyB:"Cherche une voiture à gauche, ouvre-la et coche les réglages à voir côte à côte.",
+    colSetting:"Réglage", pluck:"Créer un nouveau réglage", startFrom:"Partir de", chooseSetup:"choisir un réglage…",
+    clearPicks:"Effacer la sélection", copyIni:"Copier le nouveau réglage", copied:"Copié", selectBelow:"Sélectionne ci-dessous",
+    pluckHint:"Clique une cellule du tableau pour prendre cette valeur. Le contour noir montre ton choix.",
+    picked:"<strong>{0}</strong> sur {1} réglages choisis",
+    saveHint:"Voilà ton nouveau réglage. Colle-le dans un nouveau fichier .ini sous Documents\\Assetto Corsa\\setups\\<voiture>\\<circuit>\\ et il apparaît dans le jeu.",
+    pluckEmpty:"Rien de choisi. Prends un point de départ ci-dessus, ou clique des cellules.",
+    iniMix1:"; attention : pris sur {0} voitures différentes ({1})", iniMix2:"; ces valeurs ne partagent pas d'échelle",
+    remove:"Retirer",
+    srcBuiltin:"Bibliothèque fournie", srcOwn:"Ton propre dossier", loadFolder:"Charger mon dossier de réglages",
+    backBuiltin:"Revenir à celle fournie", srcReading:"Lecture…",
+    srcHint:"Indique ton dossier Assetto Corsa \"setups\". Rien n'est envoyé — la page le lit dans ton navigateur.",
+    srcHintOwn:"Lu directement depuis ton dossier. Rien n'a quitté ton ordinateur.",
+    srcNone:"Aucun fichier de réglage trouvé dans ce dossier.",
+    lede:"Tous tes réglages côte à côte, dans les unités que le jeu affiche.", bValue:"Valeur", bSource:"De", bNotPicked:"non choisi", bStock:"ouvert", kitT:"Emporte-le", kitB:"Cette page est un fichier et fonctionne seule. Le paquet complet — le script qui la reconstruit depuis tes réglages, le gabarit et des instructions pour Claude Code — arrive en zip de celui qui t'a envoyé ceci. Voici quoi en faire.", kitDl:"Télécharger le paquet", kitCopy:"Copier le message", kitSaved:"Enregistré", kitCopied:"Copié", kitNo:"Indisponible ici",
+    kitW:["<b>Juste regarder.</b> Ouvre AC-Setupbook.html. Il démarre avec la bibliothèque de quelqu'un d'autre pour que tu le voies fonctionner ; <b>Load my setups folder</b> le pointe vers ton propre Documents\\Assetto Corsa\\setups.",
+      "<b>Le faire tien.</b> Double-clique Run.cmd. Il trouve ton dossier de réglages et ton installation AC tout seul et reconstruit la page, en une dizaine de secondes.",
+      "<b>Laisser Claude faire.</b> Ouvre le dossier avec Claude Code et colle la ligne ci-dessous."],
+    kitPrompt:"Read CLAUDE.md in this folder and set it up for me. Rebuild the page from my own\nAssetto Corsa setups folder, then tell me where the finished AC-Setupbook.html is.\nIf you can't find my setups folder or my Assetto Corsa install, ask me instead of guessing.",
+    kitFilesT:"Ce que contient le paquet :",
+    kitFiles:["le tout, un fichier, fonctionne hors ligne","double-clic pour le reconstruire depuis tes réglages","le script appelé par Run.cmd, si tu préfères le lancer toi-même","la page sans données ; le script la remplit","instructions pour Claude Code","la version courte de tout ceci"], aboutT:"Comment ça marche",
+    about:["Choisis une voiture à gauche et coche ses réglages. Chacun devient une colonne.",
+      "Clique un en-tête de colonne pour en faire la référence <b>A</b>, un second pour <b>B</b>. La coloration ne démarre qu'ensuite, et seulement face à ces deux-là.",
+      "<b>Seulement ce qui diffère</b> masque toute ligne où les colonnes sont d'accord.",
+      "Clique une cellule pour prendre cette valeur. L'ini se construit en bas, prêt à coller dans un fichier de ton dossier de réglages.",
+      "<b>Charger mon dossier de réglages</b> pointe la page vers ton propre Documents\\Assetto Corsa\\setups. Ton navigateur le lit en local — rien n'est envoyé, il n'y a pas de serveur."],
+    aboutNote:"Les nombres sont des positions de clic sur l'échelle propre à chaque voiture, pas des unités réelles. Au sein d'une voiture ils se comparent exactement ; entre deux voitures non, même pas entre deux voitures de la même classe. C'est pour cela que la coloration se coupe dès que tu mélanges des voitures.",
+    gAero:"Aéro", gTrans:"Transmission", gSusp:"Suspension", gDamp:"Amortisseurs",
+    gTyres:"Pneus et géométrie", gDiff:"Différentiel", gBrakes:"Freins", gAids:"Aides", gOther:"Divers",
+    pF:" avant", pR:" arrière", pHF:" heave avant", pHR:" heave arrière", gear:"{0} rapport", wingN:"Aileron {0}",
+    L:{ WING_1:"Aileron avant", WING_2:"Aileron arrière", FINAL_RATIO:"Rapport final",
+        ARB_FRONT:"Barre antiroulis avant", ARB_REAR:"Barre antiroulis arrière",
+        SPRING_RATE:"Ressort", ROD_LENGTH:"Hauteur de caisse", PACKER_RANGE:"Butée", BUMP_STOP_RATE:"Butée de compression",
+        DAMP_BUMP:"Compression", DAMP_FAST_BUMP:"Compression rapide", DAMP_REBOUND:"Détente", DAMP_FAST_REBOUND:"Détente rapide",
+        PRESSURE:"Pression", CAMBER:"Carrossage", TOE_OUT:"Parallélisme", TYRES:"Gomme",
+        DIFF_POWER:"Diff accélération", DIFF_COAST:"Diff décélération", DIFF_PRELOAD:"Diff précharge",
+        FRONT_BIAS:"Répartition de freinage avant", BRAKE_POWER_MULT:"Puissance de freinage",
+        ABS:"ABS", TRACTION_CONTROL:"Antipatinage", ENGINE_LIMITER:"Limiteur", FUEL:"Carburant" }
+  }
+};
+
+const LANGKEY = "ac-setupboek-lang";
+let lang = "en";
+try { const s = localStorage.getItem(LANGKEY); if (s && STR[s]) lang = s; } catch (e) {}
+function saveLang(){ try { localStorage.setItem(LANGKEY, lang); } catch (e) {} }
+function t(key, ...a){
+  let s = STR[lang][key];
+  if (s === undefined) s = STR.en[key];
+  if (s === undefined) return key;
+  return String(s).replace(/\{(\d+)\}/g, (m, i) => a[i] !== undefined ? a[i] : m);
+}
+function plural(n, one, many){ return t(n === 1 ? one : many, n); }
+
+/* ============ labels and groups ============ */
+const GKEYS = ["gAero","gTrans","gSusp","gDamp","gTyres","gDiff","gBrakes","gAids","gOther"];
+function groupOf(base){
+  if (/^WING/.test(base)) return "gAero";
+  if (/^(FINAL_RATIO|INTERNAL_GEAR|GEAR)/.test(base)) return "gTrans";
+  if (/^(ARB|SPRING_RATE|ROD_LENGTH|PACKER_RANGE|BUMP_STOP)/.test(base)) return "gSusp";
+  if (/^DAMP/.test(base)) return "gDamp";
+  if (/^(PRESSURE|CAMBER|TOE|TYRES)/.test(base)) return "gTyres";
+  if (/^DIFF/.test(base)) return "gDiff";
+  if (/^(FRONT_BIAS|BRAKE)/.test(base)) return "gBrakes";
+  if (/^(ABS|TRACTION_CONTROL|ENGINE_LIMITER)/.test(base)) return "gAids";
+  return "gOther";
+}
+function pretty(k){
+  const s = k.replace(/_/g, " ").toLowerCase();
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+/* Setup files number the gears from INTERNAL_GEAR_2 up, so what the file calls
+   gear 2 is the car's first gear. */
+function ordinal(n){
+  if (lang === "en"){ const s = ["th","st","nd","rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
+  if (lang === "nl") return n + "e";
+  if (lang === "de") return n + ".";
+  if (lang === "es") return n + "ª";
+  if (lang === "fr") return n === 1 ? "1er" : n + "e";
+  return String(n);
+}
+function labelFor(base, pos){
+  let m;
+  if ((m = base.match(/^INTERNAL_GEAR_(\d+)$/))){
+    const g = parseInt(m[1], 10) - 1;
+    return t("gear", ordinal(g >= 1 ? g : parseInt(m[1], 10)));
+  }
+  const dict = STR[lang].L || STR.en.L;
+  if ((m = base.match(/^WING_(\d+)$/)) && !dict[base]) return t("wingN", m[1]);
+  const l = dict[base] || STR.en.L[base] || pretty(base);
+  const suf = pos ? t("p" + pos) : "";
+  return l + (suf === "p" + pos ? "" : suf);
+}
+const ORDER = ["WING","FINAL_RATIO","INTERNAL_GEAR","ARB","ROD_LENGTH","SPRING_RATE","PACKER_RANGE","BUMP_STOP_RATE",
+  "DAMP_BUMP","DAMP_FAST_BUMP","DAMP_REBOUND","DAMP_FAST_REBOUND","TYRES","PRESSURE","CAMBER","TOE_OUT",
+  "DIFF_POWER","DIFF_COAST","DIFF_PRELOAD","FRONT_BIAS","BRAKE_POWER_MULT","ABS","TRACTION_CONTROL","ENGINE_LIMITER","FUEL"];
+function rank(base){
+  for (let i = 0; i < ORDER.length; i++) if (base.startsWith(ORDER[i])) return i;
+  return ORDER.length;
+}
+const POSRANK = { HF:0, HR:1, F:2, R:3, "":4 };
+
+/* ============ state ============ */
+let CARS = [], TRACKS = {}, byId = {}, totalSetups = 0, tagCount = {}, trkStat = {}, dataStamp = "";
+let ownData = null;                       /* set once someone loads their own folder */
+let cols = [], refs = [], picks = {}, edits = {};
+let onlyDiff = false, forceColor = false, openCars = new Set();
+let view = "recent";
+
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function trackName(id){ return id === "generic" || !TRACKS[id] ? t("noTrack") : TRACKS[id]; }
+function selCount(carId){ return cols.filter(c => c.car === carId).length; }
+function setupOf(col){ return byId[col.car].setups[col.si]; }
+
+function setData(d){
+  CARS = d.cars; TRACKS = d.tracks || {}; dataStamp = d.generated || "";
+  byId = {}; CARS.forEach(c => byId[c.id] = c);
+  totalSetups = CARS.reduce((n, c) => n + c.setups.length, 0);
+  CARS.forEach(c => {
+    c._last = c.setups.reduce((m, s) => s.d > m ? s.d : m, "");
+    c._days = new Set(c.setups.map(s => s.d)).size;
+  });
+  tagCount = {};
+  CARS.forEach(c => (c.tags || []).forEach(x => tagCount[x] = (tagCount[x] || 0) + 1));
+  trkStat = {};
+  CARS.forEach(c => {
+    const seen = new Set();
+    c.setups.forEach(s => {
+      trkStat[s.t] = trkStat[s.t] || { n:0, cars:0 };
+      trkStat[s.t].n++;
+      if (!seen.has(s.t)) { seen.add(s.t); trkStat[s.t].cars++; }
+    });
+  });
+  cols = []; refs = []; picks = {}; edits = {}; openCars = new Set();
+}
+
+const PINKEY = "ac-setupboek-pins";
+let pinned = new Set();
+try { pinned = new Set(JSON.parse(localStorage.getItem(PINKEY) || "[]")); } catch (e) {}
+function savePins(){ try { localStorage.setItem(PINKEY, JSON.stringify([...pinned])); } catch (e) {} }
+
+/* ============ static text ============ */
+const langSel = document.getElementById("lang");
+langSel.innerHTML = Object.keys(LANGS).map(k =>
+  '<option value="' + k + '"' + (k === lang ? " selected" : "") + '>' + esc(k.toUpperCase()) + '</option>').join("");
+langSel.title = LANGS[lang];
+
+const tagf = document.getElementById("tagf");
+const trkf = document.getElementById("trkf");
+
+/* ============ reading your own folder ============ */
+/* The built-in data doubles as an id-to-name dictionary. Someone loading their
+   own folder has no AC install at hand, but shares most car ids with it — so
+   they still get proper names for anything this library already knows. */
+const KNOWN_CAR = {}; AC_DATA.cars.forEach(c => KNOWN_CAR[c.id] = c);
+const KNOWN_TRACK = Object.assign({}, AC_DATA.tracks);
+
+function prettyId(id){
+  return id.replace(/^ks_/, "").replace(/[_-]+/g, " ").replace(/\b\w/g, m => m.toUpperCase());
+}
+function parseIni(text){
+  const v = {}; let sec = null, model = null, m;
+  for (const raw of text.split(/\r?\n/)){
+    const line = raw.trim();
+    if ((m = line.match(/^\[(.+?)\]$/))){ sec = m[1]; continue; }
+    if (!sec) continue;
+    if ((m = line.match(/^VALUE\s*=\s*(.*)$/))){ v[sec] = m[1].trim(); continue; }
+    if (sec === "CAR" && (m = line.match(/^MODEL\s*=\s*(.*)$/))) model = m[1].trim();
+  }
+  return { v, model };
+}
+function isoDay(ms){
+  const d = new Date(ms);
+  const p = n => String(n).padStart(2, "0");
+  return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate());
+}
+async function readFolder(fileList){
+  const files = [...fileList].filter(f => /\.ini$/i.test(f.name) && !/^server_temp/i.test(f.name));
+  const carsMap = new Map(), tracks = {};
+  for (const f of files){
+    let text;
+    try { text = await f.text(); } catch (e) { continue; }
+    const { v, model } = parseIni(text);
+    if (Object.keys(v).length === 0) continue;
+
+    const rel = (f.webkitRelativePath || f.name).split(/[\/\\]/).filter(Boolean);
+    let carId = null, trackId = "generic";
+    if (rel.length >= 3 && rel[rel.length - 3].toLowerCase() !== "setups"){
+      carId = rel[rel.length - 3]; trackId = rel[rel.length - 2];
+    } else if (rel.length >= 2){
+      carId = model || rel[rel.length - 2]; trackId = rel[rel.length - 2];
+    } else {
+      carId = model;
+    }
+    if (!carId) continue;
+
+    if (!carsMap.has(carId)){
+      const k = KNOWN_CAR[carId];
+      carsMap.set(carId, {
+        id: carId, name: k ? k.name : prettyId(carId), brand: k ? k.brand : "",
+        tags: k ? k.tags : [], bhp: k ? k.bhp : "", kg: k ? k.kg : "", setups: []
+      });
+    }
+    if (tracks[trackId] === undefined) tracks[trackId] = KNOWN_TRACK[trackId] ?? (trackId === "generic" ? "" : prettyId(trackId));
+    carsMap.get(carId).setups.push({
+      n: f.name.replace(/\.ini$/i, ""), t: trackId, d: isoDay(f.lastModified),
+      a: /^last\.ini$/i.test(f.name), v
+    });
+  }
+  const cars = [...carsMap.values()].sort((a, b) => a.name.localeCompare(b.name));
+  cars.forEach(c => c.setups.sort((a, b) => a.t.localeCompare(b.t) || a.n.localeCompare(b.n)));
+  return { generated: isoDay(Date.now()), tracks, cars };
+}
+
+function renderSource(){
+  const own = !!ownData;
+  document.getElementById("src-dot").className = "src-dot" + (own ? " own" : "");
+  document.getElementById("src-name").textContent = own ? t("srcOwn") : t("srcBuiltin");
+  document.getElementById("loadbtn").textContent = t("loadFolder");
+  const back = document.getElementById("backbtn");
+  back.textContent = t("backBuiltin"); back.hidden = !own;
+  document.getElementById("src-hint").textContent = own ? t("srcHintOwn") : t("srcHint");
+}
+
+function applyStatic(){
+  document.documentElement.lang = lang;
+  const set = (id, v) => { document.getElementById(id).textContent = v; };
+  document.getElementById("h1").textContent = t("title");
+  document.getElementById("stamp").textContent = t("stamp", CARS.length, totalSetups, dataStamp);
+  renderSource();
+  const q = document.getElementById("q");
+  q.placeholder = t("searchPh"); q.setAttribute("aria-label", t("searchPh"));
+  tagf.setAttribute("aria-label", t("allClasses"));
+  trkf.setAttribute("aria-label", t("allTracks"));
+  document.getElementById("views").setAttribute("aria-label", t("order"));
+  const vb = document.getElementById("views").querySelectorAll("button");
+  vb[0].textContent = t("vRecent"); vb[1].textContent = t("vOften"); vb[2].textContent = t("vAZ");
+  set("l-selected", t("selected")); set("clearsel", t("clearAll"));
+  set("l-compare", t("compare")); set("clearrefs", t("clearCompare"));
+  set("tog", t("onlyDiff")); set("force", t("colorAnyway"));
+  set("empty-t", t("emptyT")); set("empty-b", t("emptyB"));
+  set("l-pluck", t("pluck")); set("l-startfrom", t("startFrom"));
+  set("clearpicks", t("clearPicks")); set("copy", t("copyIni"));
+  set("lede", t("lede"));
+  set("pluckhint", t("pluckHint"));
+  set("savehint", t("saveHint"));
+  set("about-t", t("aboutT"));
+  const about = (STR[lang].about || STR.en.about);
+  document.getElementById("about-list").innerHTML = about.map(x => "<li>" + x + "</li>").join("");
+  set("about-note", t("aboutNote"));
+  set("kit-t", t("kitT")); set("kit-b", t("kitB"));
+  set("kit-files-t", t("kitFilesT"));
+  set("kit-prompt", t("kitPrompt"));
+  document.getElementById("kit-ways").innerHTML = (STR[lang].kitW || STR.en.kitW).map(x => "<li>" + x + "</li>").join("");
+  const fileNames = ["AC-Setupbook.html", "Run.cmd", "Update-Setupbook.ps1", "setupbook.template.html", "CLAUDE.md", "README.txt"];
+  const fileWhat = STR[lang].kitFiles || STR.en.kitFiles;
+  document.getElementById("kit-files").innerHTML = fileNames.map((n, i) =>
+    "<li><b>" + esc(n) + "</b> — " + esc(fileWhat[i] || "") + "</li>").join("");
+  set("kit-dl", t("kitCopy"));
+  langSel.title = LANGS[lang];
+
+  const keepTag = tagf.value, keepTrk = trkf.value;
+  tagf.innerHTML = '<option value="">' + esc(t("allClasses")) + '</option>' +
+    Object.keys(tagCount).filter(x => tagCount[x] > 1).sort((a,b) => tagCount[b] - tagCount[a] || a.localeCompare(b))
+      .map(x => '<option value="' + esc(x) + '" data-lbl="' + esc(x) + '"></option>').join("");
+  tagf.value = keepTag;
+  trkf.innerHTML = '<option value="">' + esc(t("allTracks")) + '</option>' +
+    Object.keys(trkStat).sort((a,b) => trkStat[b].n - trkStat[a].n || trackName(a).localeCompare(trackName(b)))
+      .map(x => '<option value="' + esc(x) + '" data-lbl="' + esc(trackName(x)) + '"></option>').join("");
+  trkf.value = keepTrk;
+}
+
+/* The two filters count each other: pick a class and the track list reports how
+   many cars of that class have setups there, and the other way round. */
+function refreshFacets(q, tag, trk){
+  const hitQ = c => !q || (c.name + " " + c.brand + " " + c.id).toLowerCase().includes(q);
+  [...tagf.options].forEach(o => {
+    if (!o.value){ o.textContent = t("allClasses"); return; }
+    const n = CARS.filter(c => (c.tags || []).includes(o.value) && hitQ(c) &&
+      (!trk || c.setups.some(s => s.t === trk))).length;
+    o.textContent = o.dataset.lbl + " (" + n + ")";
+    o.hidden = o.disabled = (n === 0 && o.value !== tag);
+  });
+  [...trkf.options].forEach(o => {
+    if (!o.value){ o.textContent = t("allTracks"); return; }
+    const n = CARS.filter(c => c.setups.some(s => s.t === o.value) && hitQ(c) &&
+      (!tag || (c.tags || []).includes(tag))).length;
+    o.textContent = o.dataset.lbl + " (" + t("carsN", n) + ")";
+    o.hidden = o.disabled = (n === 0 && o.value !== trk);
+  });
+}
+
+/* ============ sidebar ============ */
+function setupsOf(c){
+  const x = trkf.value;
+  return x ? c.setups.map((s,i) => [s,i]).filter(([s]) => s.t === x) : c.setups.map((s,i) => [s,i]);
+}
+
+function carHtml(c){
+  const open = openCars.has(c.id), n = selCount(c.id), isPin = pinned.has(c.id);
+  const mine = setupsOf(c);
+  let body = "";
+  if (open){
+    const groups = {};
+    mine.forEach(([s,i]) => (groups[s.t] = groups[s.t] || []).push([s,i]));
+    body = Object.keys(groups).map(x =>
+      '<div class="trk">' + esc(trackName(x)) + '<span class="trk-n">' + groups[x].length + '</span></div>' +
+      groups[x].map(([s,i]) => {
+        const on = cols.some(y => y.car === c.id && y.si === i);
+        return '<label class="setup"><input type="checkbox" data-car="' + esc(c.id) + '" data-si="' + i + '"' +
+          (on ? " checked" : "") + '><span>' + esc(s.n) +
+          (s.a ? '<span class="auto-tag">' + esc(t("autoTag")) + '</span>' : "") +
+          '<span class="setup-d">' + esc(s.d) + '</span></span></label>';
+      }).join("")).join("") +
+      ((c.tags || []).length ? '<button class="samecls" data-tag="' + esc(c.tags[0]) + '">' +
+        esc(t("showAllIn", c.tags[0])) + '</button>' : "");
+  }
+  const last = mine.reduce((m, [s]) => s.d > m ? s.d : m, "");
+  const days = new Set(mine.map(([s]) => s.d)).size;
+  const sub = esc(c.brand || c.id) + " · " +
+    (view === "vaak" ? esc(plural(days, "day", "days")) : esc(last)) +
+    (mine.every(([s]) => s.a) ? " · " + esc(t("autosaveOnly")) : "");
+  return '<div class="car' + (open ? " open" : "") + '"><div class="car-row">' +
+    '<button class="pin' + (isPin ? " on" : "") + '" data-pin="' + esc(c.id) + '" title="' +
+      esc(isPin ? t("unpin") : t("pin")) + '" aria-pressed="' + isPin + '">' + (isPin ? "★" : "☆") + '</button>' +
+    '<button class="car-head" data-car="' + esc(c.id) + '" aria-expanded="' + open + '">' +
+    '<span class="car-name">' + esc(c.name) + '<span class="car-brand">' + sub + '</span></span>' +
+    '<span class="car-count">' + (n ? '<span class="selbadge">' + n + '</span>' : "") +
+      (mine.length < c.setups.length
+        ? '<span><span class="of">' + mine.length + '</span>/' + c.setups.length + '</span>'
+        : '<span>' + c.setups.length + '</span>') +
+    '</span></button></div><div class="car-body">' + body + '</div></div>';
+}
+
+function renderCars(){
+  const q = document.getElementById("q").value.trim().toLowerCase();
+  const tag = tagf.value, trk = trkf.value;
+  refreshFacets(q, tag, trk);
+  const filtered = CARS.filter(c =>
+    (!tag || (c.tags || []).includes(tag)) &&
+    (!trk || c.setups.some(s => s.t === trk)) &&
+    (!q || (c.name + " " + c.brand + " " + c.id).toLowerCase().includes(q)));
+
+  const stat = c => {
+    if (!trk) return { last:c._last, days:c._days, n:c.setups.length };
+    const mine = c.setups.filter(s => s.t === trk);
+    return { last: mine.reduce((m,s) => s.d > m ? s.d : m, ""), days: new Set(mine.map(s => s.d)).size, n: mine.length };
+  };
+  const sorters = {
+    recent: (a,b) => (stat(b).last > stat(a).last ? 1 : stat(b).last < stat(a).last ? -1 : 0) || a.name.localeCompare(b.name),
+    vaak:   (a,b) => stat(b).days - stat(a).days || stat(b).n - stat(a).n || a.name.localeCompare(b.name),
+    az:     (a,b) => a.name.localeCompare(b.name)
+  };
+  const sorted = [...filtered].sort(sorters[view]);
+
+  const narrowed = q !== "" || tag !== "" || trk !== "";
+  const pins = sorted.filter(c => pinned.has(c.id));
+  const rest = sorted.filter(c => !pinned.has(c.id));
+  const capped = (view !== "az" && !narrowed) ? rest.slice(0, 12) : rest;
+
+  let html = "";
+  if (pins.length) html += '<div class="sect">' + esc(t("pinned")) + '</div>' + pins.map(carHtml).join("");
+  if (rest.length){
+    const where = trk ? t("onTrack", trackName(trk)) : "";
+    const head = view === "recent" ? (narrowed ? t("hRecent", where, rest.length) : t("hRecentTop"))
+               : view === "vaak"   ? (narrowed ? t("hOften",  where, rest.length) : t("hOftenTop"))
+               : t("hAll", where, rest.length);
+    html += '<div class="sect">' + esc(head) + '</div>' + capped.map(carHtml).join("");
+    if (capped.length < rest.length)
+      html += '<div class="sect note">' + esc(t("more", rest.length - capped.length)) + '</div>';
+  }
+  /* Keep the scroll position: this list is rebuilt on every tick, and 140 cars
+     is a long way to fall back to the top. */
+  const listEl = document.getElementById("carlist");
+  const keepScroll = listEl.scrollTop;
+  listEl.innerHTML = html || '<div class="empty" style="padding:24px">' + esc(t("noCars")) + '</div>';
+  listEl.scrollTop = keepScroll;
+
+  const shown = filtered.reduce((n,c) => n + (trk ? c.setups.filter(s => s.t === trk).length : c.setups.length), 0);
+  document.getElementById("summary").innerHTML = narrowed
+    ? t("summaryNarrow", '<b class="narrow">' + filtered.length + '</b>', CARS.length,
+                         '<b class="narrow">' + shown + '</b>', totalSetups)
+    : t("summaryAll", CARS.length, totalSetups);
+}
+
+/* ============ rows ============ */
+function splitKey(k){
+  let m;
+  if ((m = k.match(/^(.*)_(LF|RF)$/))) return [m[1], "F"];
+  if ((m = k.match(/^(.*)_(LR|RR)$/))) return [m[1], "R"];
+  if ((m = k.match(/^(.*)_(HF)$/)))    return [m[1], "HF"];
+  if ((m = k.match(/^(.*)_(HR)$/)))    return [m[1], "HR"];
+  return [k, ""];
+}
+function buildRows(){
+  const rows = new Map();
+  cols.forEach(col => {
+    const v = setupOf(col).v;
+    for (const k in v){
+      const [base, pos] = splitKey(k);
+      const id = base + "|" + pos;
+      if (!rows.has(id)) rows.set(id, { id, base, pos, keys:new Set(), g:groupOf(base), l:labelFor(base, pos) });
+      rows.get(id).keys.add(k);
+    }
+  });
+  const arr = [...rows.values()];
+  arr.forEach(r => r.keys = [...r.keys].sort());
+  arr.sort((a,b) =>
+    GKEYS.indexOf(a.g) - GKEYS.indexOf(b.g) ||
+    rank(a.base) - rank(b.base) ||
+    a.base.localeCompare(b.base) ||
+    (POSRANK[a.pos] ?? 9) - (POSRANK[b.pos] ?? 9));
+  return arr;
+}
+function cellValue(row, col){
+  const v = setupOf(col).v;
+  const vals = row.keys.map(k => v[k]).filter(x => x !== undefined);
+  return vals.length === 0 ? null : [...new Set(vals)].join("/");
+}
+
+/* ============ click positions to real values ============ */
+/* Setup files store a click position for most settings: the real value is
+   MIN + click * STEP. A few settings instead store the value itself on a finer
+   scale than MIN and MAX are written in - camber holds tenths of a degree. Which
+   of the two applies is decided per setting by seeing which one lands inside the
+   range the car actually allows. */
+function fmtNum(x){
+  const r = Math.round(x * 100) / 100;
+  return Number.isInteger(r) ? String(r) : r.toFixed(Math.abs(r) < 10 ? 2 : 1).replace(/0$/, "");
+}
+function convert(car, key, raw){
+  const m = car.m; if (!m) return null;
+  const n = parseFloat(raw); if (isNaN(n)) return null;
+
+  if (m.g && m.g[key]){
+    const row = m.g[key][Math.round(n)];
+    if (!row) return null;
+    const bits = String(row).split("|");
+    const ratio = parseFloat(bits[bits.length - 1]);
+    const teeth = bits.length > 1 ? bits[0].replace("//", "/") : "";
+    if (isNaN(ratio)) return null;
+    return { txt: ratio.toFixed(3) + (teeth ? " · " + teeth : ""), max: m.g[key].length - 1, min: 0, step: 1 };
+  }
+  if (key === "TYRES" && m.c && m.c.length){
+    const c = m.c[Math.round(n)];
+    if (!c) return null;
+    return { txt: c.n + (c.s ? " (" + c.s + ")" : ""), min: 0, max: m.c.length - 1, step: 1 };
+  }
+  const r = m.r && m.r[key]; if (!r) return null;
+  const clicks = Math.round((r.mx - r.mn) / r.st);
+  let val = null, min = 0, max = clicks;
+  if (n >= 0 && n <= clicks){
+    val = r.mn + n * r.st;
+  } else {
+    for (const f of [10, 100, 1]){
+      if (n / f >= r.mn && n / f <= r.mx){ val = n / f; min = r.mn * f; max = r.mx * f; break; }
+    }
+    if (val === null) return null;
+  }
+  let txt = fmtNum(val);
+  if (/^PRESSURE/.test(key)) txt += " psi · " + (val * 0.0689476).toFixed(2) + " bar";
+  else if (key === "FUEL") txt += " L";
+  else if (/^CAMBER/.test(key)) txt += "°";
+  return { txt, min, max, step: 1 };
+}
+/* The display string for a cell; falls back to the click position. */
+function cellText(row, col, raw){
+  if (raw === null) return null;
+  if (row.keys.length === 1 && !raw.includes("/")){
+    const c = convert(byId[col.car], row.keys[0], raw);
+    if (c) return c.txt;
+  }
+  return raw;
+}
+
+/* ============ real values from the car data ============ */
+const PSI_TO_BAR = 0.0689476;
+function fmtNum(v){
+  if (!isFinite(v)) return String(v);
+  const r = Math.round(v * 1000) / 1000;
+  return Math.abs(r - Math.round(r)) < 1e-9 ? String(Math.round(r)) : String(r);
+}
+
+/* A setup file stores either a click position or the value itself on a finer
+   scale. Which of the two follows from the range in the car data, so work it
+   out per setting rather than applying one rule to everything. */
+function scaleOf(r, n){
+  const clicks = Math.round((r.mx - r.mn) / r.st);
+  if (n >= 0 && n <= clicks) return { val: r.mn + n * r.st, lo: 0, hi: clicks };
+  for (const f of [10, 100]){
+    const c = n / f;
+    if (c >= r.mn && c <= r.mx) return { val: c, lo: Math.round(r.mn * f), hi: Math.round(r.mx * f) };
+  }
+  return null;
+}
+
+function realOne(car, key, raw){
+  const m = car.m; if (!m) return null;
+  const n = parseFloat(raw); if (isNaN(n)) return null;
+
+  if (m.g && m.g[key]){
+    const row = m.g[key][Math.round(n)];
+    if (!row) return null;
+    const p = String(row).split("|");
+    const ratio = parseFloat(p[1]);
+    return isNaN(ratio) ? p[0] : ratio.toFixed(3) + " · " + p[0].replace("//", "/");
+  }
+  if (key === "TYRES" && m.c && m.c.length){
+    const c = m.c[Math.round(n)];
+    return c ? c.n + (c.s ? " (" + c.s + ")" : "") : null;
+  }
+  const r = m.r && m.r[key]; if (!r) return null;
+  const s = scaleOf(r, n); if (!s) return null;
+
+  if (/^PRESSURE/.test(key)) return fmtNum(s.val) + " psi · " + (s.val * PSI_TO_BAR).toFixed(2) + " bar";
+  if (key === "FUEL") return fmtNum(s.val) + " L";
+  if (/^CAMBER/.test(key)) return fmtNum(s.val) + "°";
+  return fmtNum(s.val);
+}
+
+/* Grenzen waarbinnen een waarde in de builder mag bewegen. */
+function boundsOf(car, key, raw){
+  const m = car.m; if (!m) return null;
+  const n = parseFloat(raw); if (isNaN(n)) return null;
+  if (m.g && m.g[key]) return { lo: 0, hi: m.g[key].length - 1 };
+  if (key === "TYRES" && m.c && m.c.length) return { lo: 0, hi: m.c.length - 1 };
+  const r = m.r && m.r[key]; if (!r) return null;
+  const s = scaleOf(r, n); if (!s) return null;
+  return { lo: s.lo, hi: s.hi };
+}
+
+/* Displayed text for a cell: the real value where the car data allows it,
+   otherwise the raw number straight from the file. */
+function cellText(row, col, raw){
+  if (raw === null) return null;
+  const car = byId[col.car];
+  const parts = String(raw).split("/");
+  const out = parts.map((p, i) => realOne(car, row.keys[Math.min(i, row.keys.length - 1)], p) || p);
+  return [...new Set(out)].join(" / ");
+}
+function hasReal(row, col, raw){
+  if (raw === null) return false;
+  return realOne(byId[col.car], row.keys[0], String(raw).split("/")[0]) !== null;
+}
+
+/* ============ colouring ============ */
+const num = s => { const m = String(s).match(/-?\d+/); return m ? parseInt(m[0], 10) : null; };
+function mixedCars(){ return new Set(cols.map(c => c.car)).size > 1; }
+function coloring(){ return refs.length > 0 && (!mixedCars() || forceColor); }
+function cls(vals, i){
+  if (!coloring() || refs.includes(i)) return "";
+  const x = num(vals[i]); if (x === null) return "";
+  if (refs.length === 1){
+    const a = num(vals[refs[0]]);
+    if (a === null || x === a) return "";
+    return x > a ? "warm" : "cool";
+  }
+  const a = num(vals[refs[0]]), b = num(vals[refs[1]]);
+  if (a === null || b === null || a === b) return "";
+  if (x === a) return "cool";
+  if (x === b) return "warm";
+  const lo = Math.min(a,b), hi = Math.max(a,b);
+  return (x > lo && x < hi) ? "mid" : "out";
+}
+
+/* ============ rendering ============ */
+function renderChips(){
+  document.getElementById("chips").innerHTML = cols.map((c,i) => {
+    const s = setupOf(c);
+    return '<span class="chip"><b>' + esc(s.n) + '</b><em>' + esc(byId[c.car].name) + " &middot; " +
+      esc(trackName(s.t)) + '</em><button data-at="' + i + '" aria-label="' + esc(t("remove")) + '">&times;</button></span>';
+  }).join("");
+  const nc = new Set(cols.map(c => c.car)).size;
+  const nt = new Set(cols.map(c => setupOf(c).t)).size;
+  document.getElementById("selhint").textContent = cols.length === 0
+    ? t("selEmpty")
+    : t("selSum", plural(cols.length, "nSetup", "nSetups"), plural(nc, "nCar", "nCars"), plural(nt, "nTrack", "nTracks"));
+}
+
+function renderControls(){
+  const has = cols.length > 0;
+  document.getElementById("ctrls").hidden = !has;
+  document.getElementById("pluk").hidden = !has;
+  document.getElementById("tbl").hidden = !has;
+  document.getElementById("empty").hidden = has;
+  if (!has) return;
+
+  /* With a single column there is nothing to differ from, so the button would
+     just empty the table. */
+  const tog = document.getElementById("tog");
+  tog.disabled = cols.length < 2;
+  if (tog.disabled && onlyDiff) { onlyDiff = false; tog.setAttribute("aria-pressed", "false"); }
+
+  const mixed = mixedCars();
+  const fbtn = document.getElementById("force");
+  fbtn.hidden = !mixed;
+  fbtn.setAttribute("aria-pressed", forceColor ? "true" : "false");
+  const warn = document.getElementById("mixwarn");
+  warn.hidden = !mixed;
+  if (mixed){
+    const names = [...new Set(cols.map(c => byId[c.car].name))];
+    warn.innerHTML = t("mixWarn", names.length, esc(names.join(", ")), esc(t("colorAnyway")));
+  }
+
+  document.getElementById("refhint").textContent =
+    refs.length === 0 ? t("refNone")
+    : refs.length === 1 ? t("refOne", setupOf(cols[refs[0]]).n)
+    : t("refTwo", setupOf(cols[refs[0]]).n, setupOf(cols[refs[1]]).n);
+
+  let lg = '<span><i class="swatch sw-pick"></i>' + esc(t("lgPicked")) + '</span>';
+  if (coloring() && refs.length === 1){
+    const n = esc(setupOf(cols[refs[0]]).n);
+    lg += '<span><i class="swatch sw-warm"></i>' + esc(t("lgHigher", n)) + '</span>' +
+          '<span><i class="swatch sw-cool"></i>' + esc(t("lgLower", n)) + '</span>';
+  } else if (coloring()){
+    lg += '<span><i class="swatch sw-cool"></i>' + esc(t("lgEqA")) + '</span>' +
+          '<span><i class="swatch sw-warm"></i>' + esc(t("lgEqB")) + '</span>' +
+          '<span><i class="swatch sw-mid"></i>' + esc(t("lgBetween")) + '</span>' +
+          '<span><i class="swatch sw-out"></i>' + esc(t("lgBeyond")) + '</span>';
+  } else {
+    lg += '<span class="hint">' + esc(t("lgNone")) + '</span>';
+  }
+  document.getElementById("legend").innerHTML = lg;
+}
+
+function renderHead(){
+  document.getElementById("hrow").innerHTML =
+    '<th class="pname" scope="col"><span class="colname">' + esc(t("colSetting")) + '</span></th>' +
+    cols.map((c,i) => {
+      const s = setupOf(c), r = refs.indexOf(i);
+      const cl = r === 0 ? " refA" : r === 1 ? " refB" : "";
+      const badge = r === 0 ? '<span class="badge badge-a">A</span>'
+                  : r === 1 ? '<span class="badge badge-b">B</span>'
+                  : '<span class="badge badge-ghost">&nbsp;&nbsp;</span>';
+      return '<th class="col' + cl + '" scope="col" tabindex="0" data-i="' + i + '" title="' +
+        esc(byId[c.car].name + " — " + s.n) + '">' + badge +
+        '<span class="colcar">' + esc(byId[c.car].name) + '</span>' +
+        '<span class="colname">' + esc(s.n) + '</span>' +
+        '<span class="colmeta">' + esc(trackName(s.t)) + " &middot; " + esc(s.d) + '</span></th>';
+    }).join("");
+}
+
+let ROWS = [];
+function renderBody(){
+  ROWS = buildRows();
+  let html = "", grp = null, shown = 0;
+  ROWS.forEach(r => {
+    const vals = cols.map(c => cellValue(r, c));
+    const same = vals.every(v => v === vals[0]);
+    if (onlyDiff && same) return;
+    shown++;
+    if (r.g !== grp){
+      grp = r.g;
+      html += '<tr class="grp"><td class="pname">' + esc(t(grp)) + '</td><td colspan="' + cols.length + '"></td></tr>';
+    }
+    html += '<tr><td class="pname" title="' + esc(r.keys.join(", ")) + '">' + esc(r.l) + '</td>' +
+      vals.map((v,i) => {
+        if (v === null) return '<td class="na">&mdash;</td>';
+        const c = ["val", cls(vals, i)];
+        if (picks[r.id] === i) c.push("picked");
+        const shown = cellText(r, cols[i], v);
+        const extra = shown !== v ? '<span class="click">' + esc(v) + '</span>' : "";
+        return '<td class="' + c.join(" ") + '" data-row="' + esc(r.id) + '" data-i="' + i +
+          '" title="' + esc(r.keys.join(", ") + " = " + v) + '">' +
+          (extra ? '<span class="real">' + esc(shown) + '</span>' + extra : esc(shown)) + '</td>';
+      }).join("") + '</tr>';
+  });
+  document.getElementById("tb").innerHTML = html;
+  document.getElementById("rowcount").textContent = t("rows", shown, ROWS.length);
+}
+
+/* The value a picked row currently holds: what you clicked, unless you have
+   since nudged or typed something else. */
+function pickedRaw(row){
+  if (edits[row.id] !== undefined) return String(edits[row.id]);
+  const ci = picks[row.id];
+  if (ci === undefined || !cols[ci]) return null;
+  return cellValue(row, cols[ci]);
+}
+function boundsFor(row){
+  const ci = picks[row.id];
+  if (ci === undefined || !cols[ci]) return null;
+  const raw = cellValue(row, cols[ci]);
+  if (raw === null || row.keys.length !== 1 || raw.includes("/")) return null;
+  return convert(byId[cols[ci].car], row.keys[0], raw);
+}
+
+function renderBuild(){
+  const tbl = document.getElementById("buildtbl");
+  if (ROWS.length === 0){ tbl.innerHTML = ""; return; }
+  let html = '<thead><tr><th>' + esc(t("colSetting")) + '</th><th>' + esc(t("bValue")) +
+    '</th><th>' + esc(t("bSource")) + '</th></tr></thead><tbody>';
+  ROWS.forEach(r => {
+    const ci = picks[r.id];
+    if (ci === undefined){
+      html += '<tr class="open"><td class="b-name">' + esc(r.l) + '</td><td class="b-val">&mdash;</td>' +
+        '<td class="b-src">' + esc(t("bNotPicked")) + '</td></tr>';
+      return;
+    }
+    const raw = pickedRaw(r), b = boundsFor(r);
+    const car = byId[cols[ci].car];
+    const shown = (r.keys.length === 1 && !String(raw).includes("/") && convert(car, r.keys[0], raw))
+      ? convert(car, r.keys[0], raw).txt : raw;
+    const nRaw = parseFloat(raw);
+    const canStep = b && !isNaN(nRaw);
+    const dis = (d) => canStep && ((d < 0 && nRaw <= b.min) || (d > 0 && nRaw >= b.max)) ? " disabled" : "";
+    const cell = canStep
+      ? '<span class="stepper">' +
+        '<button data-brow="' + esc(r.id) + '" data-d="-1"' + dis(-1) + ' aria-label="&minus;">&minus;</button>' +
+        '<input type="text" inputmode="numeric" data-brow="' + esc(r.id) + '" value="' + esc(raw) + '">' +
+        '<button data-brow="' + esc(r.id) + '" data-d="1"' + dis(1) + ' aria-label="+">+</button></span> ' +
+        '<span class="' + (edits[r.id] !== undefined ? "edited" : "") + '">' + esc(shown) + '</span>'
+      : '<span class="stepper"><input type="text" inputmode="numeric" data-brow="' + esc(r.id) + '" value="' + esc(raw) + '"></span> ' +
+        '<span class="' + (edits[r.id] !== undefined ? "edited" : "") + '">' + esc(shown) + '</span>';
+    html += '<tr><td class="b-name">' + esc(r.l) + '</td><td class="b-val">' + cell + '</td>' +
+      '<td class="b-src" title="' + esc(car.name + " — " + setupOf(cols[ci]).n) + '">' +
+      esc(setupOf(cols[ci]).n) + '</td></tr>';
+  });
+  tbl.innerHTML = html + '</tbody>';
+}
+
+function nudge(rowId, d){
+  const r = ROWS.find(x => x.id === rowId); if (!r) return;
+  const b = boundsFor(r); const cur = parseFloat(pickedRaw(r));
+  if (isNaN(cur)) return;
+  let next = cur + d * ((b && b.step) || 1);
+  if (b){ next = Math.max(b.min, Math.min(b.max, next)); }
+  edits[rowId] = next;
+  renderBuild(); buildIni();
+}
+function setRaw(rowId, txt){
+  const r = ROWS.find(x => x.id === rowId); if (!r) return;
+  let v = parseFloat(txt);
+  if (isNaN(v)) { renderBuild(); return; }
+  const b = boundsFor(r);
+  v = Math.round(v);
+  if (b){ v = Math.max(b.min, Math.min(b.max, v)); }
+  edits[rowId] = v;
+  renderBuild(); buildIni();
+}
+
+function buildIni(){
+  const ids = Object.keys(picks);
+  const rowById = {}; ROWS.forEach(r => rowById[r.id] = r);
+  const lines = [], usedCars = new Set();
+  ids.forEach(id => {
+    const r = rowById[id], ci = picks[id];
+    if (!r || !cols[ci]) return;
+    const v = setupOf(cols[ci]).v;
+    usedCars.add(cols[ci].car);
+    const override = edits[id];
+    r.keys.forEach(k => {
+      if (v[k] === undefined) return;
+      lines.push([k, override !== undefined ? String(override) : v[k]]);
+    });
+  });
+  const out = document.getElementById("out");
+  document.getElementById("count").innerHTML = t("picked", ids.length, ROWS.length);
+  if (lines.length === 0){ out.textContent = t("pluckEmpty"); return; }
+  const model = cols[picks[ids[0]]] ? cols[picks[ids[0]]].car : "";
+  lines.push(["CAR", null]);
+  lines.sort((a,b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0);
+  let txt = "";
+  if (usedCars.size > 1){
+    txt += t("iniMix1", usedCars.size, [...usedCars].map(c => byId[c].name).join(", ")) + "\n" +
+           t("iniMix2") + "\n\n";
+  }
+  for (const [k,v] of lines) txt += "[" + k + "]\n" + (k === "CAR" ? "MODEL=" + model : "VALUE=" + v) + "\n\n";
+  txt += "[__EXT_PATCH]\nVERSION=0.2.9\n";
+  out.textContent = txt;
+}
+
+function renderFill(){
+  document.getElementById("fill").innerHTML = '<option value="">' + esc(t("chooseSetup")) + '</option>' +
+    cols.map((c,i) => '<option value="' + i + '">' + esc(byId[c.car].name + " — " + setupOf(c).n) + '</option>').join("");
+}
+function renderAll(){ renderCars(); renderChips(); renderControls(); renderHead(); renderBody(); renderFill(); renderBuild(); buildIni(); }
+
+/* ============ controls ============ */
+function removeCol(at){
+  cols.splice(at, 1);
+  refs = refs.filter(r => r !== at).map(r => r > at ? r - 1 : r);
+  const np = {};
+  for (const k in picks){ const v = picks[k]; if (v === at) continue; np[k] = v > at ? v - 1 : v; }
+  picks = np;
+}
+function toggleRef(i){
+  const at = refs.indexOf(i);
+  if (at > -1) refs.splice(at, 1);
+  else { refs.push(i); if (refs.length > 2) refs.shift(); }
+  renderControls(); renderHead(); renderBody();
+  /* renderHead replaces the header cells, so put focus back where it was. */
+  const again = document.querySelector('th.col[data-i="' + i + '"]');
+  if (again && document.activeElement === document.body) again.focus();
+}
+
+langSel.addEventListener("change", () => {
+  lang = langSel.value; saveLang(); applyStatic(); renderAll();
+});
+document.getElementById("q").addEventListener("input", renderCars);
+tagf.addEventListener("change", renderCars);
+trkf.addEventListener("change", renderCars);
+document.getElementById("views").addEventListener("click", e => {
+  const b = e.target.closest("button[data-v]"); if (!b) return;
+  view = b.dataset.v;
+  [...e.currentTarget.querySelectorAll("button")].forEach(x =>
+    x.setAttribute("aria-pressed", x.dataset.v === view ? "true" : "false"));
+  renderCars();
+});
+document.getElementById("carlist").addEventListener("click", e => {
+  const pin = e.target.closest("button[data-pin]");
+  if (pin){ const id = pin.dataset.pin; pinned.has(id) ? pinned.delete(id) : pinned.add(id); savePins(); renderCars(); return; }
+  const head = e.target.closest(".car-head");
+  if (head){ const id = head.dataset.car; openCars.has(id) ? openCars.delete(id) : openCars.add(id); renderCars(); return; }
+  const same = e.target.closest(".samecls");
+  if (same){ tagf.value = same.dataset.tag; renderCars(); }
+});
+document.getElementById("carlist").addEventListener("change", e => {
+  const cb = e.target.closest("input[type=checkbox]"); if (!cb) return;
+  const car = cb.dataset.car, si = parseInt(cb.dataset.si, 10);
+  const at = cols.findIndex(x => x.car === car && x.si === si);
+  if (cb.checked && at === -1) cols.push({ car, si });
+  else if (!cb.checked && at > -1) removeCol(at);
+  renderAll();
+});
+document.getElementById("chips").addEventListener("click", e => {
+  const b = e.target.closest("button[data-at]"); if (!b) return;
+  removeCol(parseInt(b.dataset.at, 10)); renderAll();
+});
+document.getElementById("hrow").addEventListener("click", e => {
+  const th = e.target.closest("th.col"); if (th) toggleRef(parseInt(th.dataset.i, 10));
+});
+document.getElementById("hrow").addEventListener("keydown", e => {
+  if (e.key !== "Enter" && e.key !== " ") return;
+  const th = e.target.closest("th.col"); if (!th) return;
+  e.preventDefault(); toggleRef(parseInt(th.dataset.i, 10));
+});
+document.getElementById("tb").addEventListener("click", e => {
+  const td = e.target.closest("td.val"); if (!td) return;
+  const id = td.dataset.row, ci = parseInt(td.dataset.i, 10);
+  if (picks[id] === ci) { delete picks[id]; delete edits[id]; } else { picks[id] = ci; delete edits[id]; }
+  renderBody(); renderBuild(); buildIni();
+});
+document.getElementById("fill").addEventListener("change", e => {
+  if (e.target.value === "") return;
+  const ci = parseInt(e.target.value, 10);
+  ROWS.forEach(r => { if (cellValue(r, cols[ci]) !== null) { picks[r.id] = ci; delete edits[r.id]; } });
+  e.target.value = "";
+  renderBody(); renderBuild(); buildIni();
+});
+document.getElementById("clearpicks").addEventListener("click", () => { picks = {}; edits = {}; renderBody(); renderBuild(); buildIni(); });
+document.getElementById("clearrefs").addEventListener("click", () => { refs = []; renderControls(); renderHead(); renderBody(); });
+document.getElementById("clearsel").addEventListener("click", () => { cols = []; refs = []; picks = {}; edits = {}; renderAll(); });
+
+document.getElementById("buildtbl").addEventListener("click", e => {
+  const b = e.target.closest("button[data-brow]"); if (!b) return;
+  nudge(b.dataset.brow, parseInt(b.dataset.d, 10));
+});
+document.getElementById("buildtbl").addEventListener("change", e => {
+  const i = e.target.closest("input[data-brow]"); if (!i) return;
+  setRaw(i.dataset.brow, i.value);
+});
+document.getElementById("buildtbl").addEventListener("keydown", e => {
+  const i = e.target.closest("input[data-brow]"); if (!i) return;
+  if (e.key === "Enter") { e.preventDefault(); setRaw(i.dataset.brow, i.value); }
+  else if (e.key === "ArrowUp") { e.preventDefault(); nudge(i.dataset.brow, 1); }
+  else if (e.key === "ArrowDown") { e.preventDefault(); nudge(i.dataset.brow, -1); }
+});
+document.getElementById("tog").addEventListener("click", e => {
+  onlyDiff = !onlyDiff; e.currentTarget.setAttribute("aria-pressed", onlyDiff ? "true" : "false"); renderBody();
+});
+document.getElementById("force").addEventListener("click", () => { forceColor = !forceColor; renderControls(); renderBody(); });
+document.getElementById("copy").addEventListener("click", async e => {
+  const btn = e.currentTarget;
+  try { await navigator.clipboard.writeText(document.getElementById("out").textContent); btn.textContent = t("copied"); }
+  catch { btn.textContent = t("selectBelow"); }
+  setTimeout(() => { btn.textContent = t("copyIni"); }, 1800);
+});
+
+document.getElementById("loadbtn").addEventListener("click", () => document.getElementById("folder").click());
+document.getElementById("folder").addEventListener("change", async e => {
+  const btn = document.getElementById("loadbtn"), hint = document.getElementById("src-hint");
+  btn.textContent = t("srcReading");
+  let d = null;
+  try { d = await readFolder(e.target.files); } catch (err) { d = null; }
+  e.target.value = "";
+  if (!d || d.cars.length === 0){ hint.textContent = t("srcNone"); btn.textContent = t("loadFolder"); return; }
+  ownData = d; setData(d); applyStatic(); renderAll();
+});
+document.getElementById("backbtn").addEventListener("click", () => {
+  ownData = null; setData(AC_DATA); applyStatic(); renderAll();
+});
+
+setData(AC_DATA);
+/* The package itself travels as a zip; a page cannot hand over files on a
+   publicly shared link. All this button does is copy the one line you paste
+   into Claude Code. */
+(function(){
+  const btn = document.getElementById("kit-dl"), note = document.getElementById("kit-s");
+  btn.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(document.getElementById("kit-prompt").textContent);
+      note.textContent = t("kitCopied");
+    } catch (e) {
+      note.textContent = t("kitNo");
+    }
+    setTimeout(() => { note.textContent = ""; }, 3000);
+  });
+})();
+
+applyStatic();
+renderAll();
+</script>
