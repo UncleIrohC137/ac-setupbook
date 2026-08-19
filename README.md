@@ -1,92 +1,53 @@
 # AC Setupbook
 
-Compare Assetto Corsa car setups side by side, per car and per track, instead of
-opening them one at a time in the game.
+Builds one HTML page that puts your Assetto Corsa setups side by side, in the
+units the game shows: psi and bar, litres, compound names, gear ratios.
 
-The page groups every setting into blocks, folds left and right into "front" and
-"rear", and shows values the way the game shows them — tyre pressure in psi and
-bar, fuel in litres, compounds by name, gears as ratios with their tooth counts —
-with the raw click position still visible next to each one.
-
-Pick any two setups as reference **A** and **B** and everything else shades
-against them: same as A, same as B, in between, or past both. One button hides
-every row where the columns agree. Then build a new setup out of what is on
-screen: click cells to take values, nudge them with **+** and **−** or type a
-number, and copy the finished ini.
-
-Five languages, English by default. Everything happens in your browser — nothing
-is uploaded and there is no server.
-
-## Getting started
-
-Clone or download this repository, then:
+## Run it
 
 ```
 .\Run.cmd
 ```
 
-That is it. The script finds your `Documents\Assetto Corsa\setups` folder and
-your Assetto Corsa installation on its own, reads them, and writes
-`AC-Setupbook.html` next to itself. Open that file.
+Finds your setups folder and your Assetto Corsa install, writes
+`AC-Setupbook.html` next to itself. Open that. Run it again after making new
+setups — it rebuilds from scratch.
 
-Run it again whenever you have made new setups. It rebuilds from scratch, so
-setups you deleted disappear as well.
-
-### If you use Claude Code
-
-Open the folder and say:
+Using Claude Code instead:
 
 ```
 Read CLAUDE.md in this folder and set it up for me.
 ```
 
-`CLAUDE.md` covers what to run, what a healthy run looks like, where to look when
-a folder is not where it expects, and which non-findings are normal rather than
-errors.
+Nothing to install. Works on the PowerShell that ships with Windows and on
+PowerShell 7.
 
-### If Run.cmd is not for you
-
-```
-pwsh -File .\Update-Setupbook.ps1
-```
-
-or, on the PowerShell that ships with Windows:
-
-```
-powershell -ExecutionPolicy Bypass -File .\Update-Setupbook.ps1
-```
-
-Pass paths yourself if the automatic search comes up empty:
+## If it can't find your folders
 
 ```
 .\Update-Setupbook.ps1 -SetupsRoot "D:\...\Assetto Corsa\setups" -AcRoot "D:\SteamLibrary\steamapps\common\assettocorsa"
 ```
 
-## What is here
+Without the Assetto Corsa install it still works; values stay as raw click
+positions instead of real units.
+
+## Files
 
 | | |
 |---|---|
-| `Run.cmd` | double-click to build the page from your setups |
-| `Update-Setupbook.ps1` | the script it calls; runs on Windows PowerShell 5.1 and PowerShell 7 |
-| `setupbook.template.html` | the page without data; the script fills it |
+| `Run.cmd` | double-click to build the page |
+| `Update-Setupbook.ps1` | the script it calls |
+| `setupbook.template.html` | the page without data |
 | `CLAUDE.md` | instructions for Claude Code |
 
-`AC-Setupbook.html` and `acd-keys.json` are produced by the script and are not
-tracked here.
+`AC-Setupbook.html` and `acd-keys.json` are produced by the script, not tracked.
 
-## How the real values are read
+## Two notes
 
-Setup files store click positions, not units. What a click means lives in each
-car's `data.acd`, alongside compound names and gear ratio tables. The script
-opens that file **in memory only** to learn the ranges. It never writes to your
-Assetto Corsa installation, and deliberately does not unpack anything to disk —
-that changes file checksums and can get you rejected by servers that verify them.
+Your Assetto Corsa install is only read, never written to. Car data is opened in
+memory to learn the setting ranges; nothing is unpacked to disk, which would
+change file checksums and can get you rejected by servers that verify them.
 
-Cars whose data cannot be read still work; their values stay as click positions.
-
-## One thing worth knowing
-
-Setup values sit on each car's own scale. Within one car they compare exactly.
-Between two cars they do not — not even two cars in the same class. Put two
-different cars side by side and the colouring switches itself off and says why.
-You can override that if you know what you are looking at.
+Setup values are positions on each car's own scale. They compare exactly within
+one car, and not at all between two cars — the page turns colouring off when you
+mix cars.
